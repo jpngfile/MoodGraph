@@ -9,9 +9,12 @@ router.get('/', function(req, res, next) {
 });
 
 // GET request for creating an account
-router.get('/createAccount', account_controller.account_create_get)
+router.get('/account/create', account_controller.account_create_get)
 
-// Get request for login
+// POST request for creating an account
+router.post('/account/create', account_controller.account_create_post)
+
+// GET request for login
 router.get('/login', login_controller.login_get)
 
 module.exports = router;
