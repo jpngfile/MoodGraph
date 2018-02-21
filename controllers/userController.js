@@ -2,7 +2,7 @@ var User = require('../models/user');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-exports.account_list = function(req, res) {
+exports.user_list = function(req, res) {
     
     User.find()
         .sort([[ 'username', 'ascending' ]])
@@ -12,11 +12,11 @@ exports.account_list = function(req, res) {
         })
 }
 
-exports.account_create_get = function(req, res) {
+exports.user_create_get = function(req, res) {
     res.render('signup', { title: "Signup"});
 }
 
-exports.account_create_post = [
+exports.user_create_post = [
     body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
     body('password').isLength({ min: 1}).withMessage('Password must be specified'),
 
