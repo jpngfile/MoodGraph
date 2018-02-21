@@ -2,6 +2,16 @@ var User = require('../models/user');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
+exports.account_list = function(req, res) {
+    
+    User.find()
+        .sort([[ 'username', 'ascending' ]])
+        .exec(function (err, list_users) {
+            if (err) { return next(err); }
+            res.render('user_list', { title: 'Users', user_list: list_users })
+        })
+}
+
 exports.account_create_get = function(req, res) {
     res.render('signup', { title: "Signup"});
 }

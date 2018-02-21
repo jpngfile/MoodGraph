@@ -14,6 +14,9 @@ router.get('/account/create', account_controller.account_create_get)
 // POST request for creating an account
 router.post('/account/create', account_controller.account_create_post)
 
+// GET request to show all users
+router.get('/users', account_controller.account_list)
+
 // GET request for login
 router.get('/login', login_controller.login_get)
 

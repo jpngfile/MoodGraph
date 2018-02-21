@@ -3,6 +3,10 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  a(href='/account/create') Create Account
-  br
-  a(href='/login') Login
+  ul
+    li
+      a(href='/account/create') Create Account
+    li
+      a(href='/login') Login
+    li
+      a(href='/users') List of Users
