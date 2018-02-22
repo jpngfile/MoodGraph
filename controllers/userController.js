@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var Year = require('../models/year');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
@@ -29,14 +30,17 @@ exports.user_create_post = [
             res.render('signup', { title: "Signup", user: req.body, errors: errors.array() });
             return;
         } else {
+            var year = new Year({
+                days: Array(365).fill('unassigned')
+            })
             var user = new User({
                 username: req.body.username,
                 password: req.body.password,
-                years: []
+                years: [year]
             });
             user.save(function (err) {
                 if (err) { return next(err); }
-                res.send("user created");
+                res.redirect('/users');
             })
         }
     }
