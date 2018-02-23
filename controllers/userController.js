@@ -13,6 +13,22 @@ exports.user_list = function(req, res) {
         })
 }
 
+exports.user_detail = function(req, res) {
+    async.parallel({
+        User.findById(req.params.id)
+            .exec(callback)
+        }
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.user == null) {
+            var err = new Error('User not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.render('user_detail', { title: 'User detail', user: results.user })
+    });
+}
+
 exports.user_create_get = function(req, res) {
     res.render('signup', { title: "Signup"});
 }
