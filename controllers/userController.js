@@ -18,6 +18,7 @@ exports.user_detail = function(req, res) {
     async.parallel({
         user: function(callback) {
             User.findById(req.params.id)
+                .populate('years')
                 .exec(callback)
         }
     }, function(err, results) {
