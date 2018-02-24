@@ -14,6 +14,9 @@ router.get('/user/create', user_controller.user_create_get)
 // POST request for creating a user
 router.post('/user/create', user_controller.user_create_post)
 
+// GET request for one user
+router.get('/user/:id', user_controller.user_detail);
+
 // GET request to show all users
 router.get('/users', user_controller.user_list)
 

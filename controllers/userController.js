@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var Year = require('../models/year');
+var async = require('async');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
@@ -15,8 +16,9 @@ exports.user_list = function(req, res) {
 
 exports.user_detail = function(req, res) {
     async.parallel({
-        User.findById(req.params.id)
-            .exec(callback)
+        user: function(callback) {
+            User.findById(req.params.id)
+                .exec(callback)
         }
     }, function(err, results) {
         if (err) { return next(err); }
@@ -54,6 +56,9 @@ exports.user_create_post = [
                 password: req.body.password,
                 years: [year]
             });
+            year.save(function (err) {
+                if (err) { return next(err); }
+            })
             user.save(function (err) {
                 if (err) { return next(err); }
                 res.redirect('/users');
