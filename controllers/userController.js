@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var Year = require('../models/year');
+var Day = require('../models/day');
 var async = require('async');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -18,7 +19,10 @@ exports.user_detail = function(req, res) {
     async.parallel({
         user: function(callback) {
             User.findById(req.params.id)
-                .populate('years')
+                .populate({
+                    path: 'years',
+                    populate: { path: 'days' },
+                })
                 .exec(callback)
         }
     }, function(err, results) {
@@ -49,8 +53,23 @@ exports.user_create_post = [
             res.render('signup', { title: "Signup", user: req.body, errors: errors.array() });
             return;
         } else {
+            var days = [];
+            //var initialDate = new Date(Date.now.getFullYear(), 1, 1);
+            var initialDate = new Date()
+            for (var i = 0; i < 365; i++){
+                var date = new Date();
+                date.setDate(initialDate.getDate() + i)
+                var day = new Day({
+                    mood: 'unassigned',
+                    date: date,
+                });
+                day.save(function(err) {
+                     if (err) { return next(err); }
+                })
+                days.push(day);
+            }
             var year = new Year({
-                days: Array(365).fill('unassigned')
+                days: days
             })
             var user = new User({
                 username: req.body.username,
