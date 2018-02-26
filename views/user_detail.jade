@@ -6,4 +6,8 @@ block content
   h1 Name: #{user.username}
   div
     h4 Years
-    p #{user.years}
+    for year in user.years
+     ul 
+     for day in year.days
+       li #{day}
+        
