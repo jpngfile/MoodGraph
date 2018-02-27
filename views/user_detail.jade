@@ -1,6 +1,9 @@
 extends layout
 
 block content
+  script(src="https://d3js.org/d3.v4.min.js")
+  script user = !{JSON.stringify(user)}
+  script(src="/javascripts/graph.js")
   h1=title
   
   h1 Name: #{user.username}
