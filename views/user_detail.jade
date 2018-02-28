@@ -3,14 +3,16 @@ extends layout
 block content
   script(src="https://d3js.org/d3.v4.min.js")
   script user = !{JSON.stringify(user)}
-  script(src="/javascripts/graph.js")
   h1=title
-  
+
+  div.heatmap
+    p heatmap
+
+  script(src="/javascripts/graph.js")
   h1 Name: #{user.username}
-  div
-    h4 Years
-    for year in user.years
-     ul 
-     for day in year.days
+//-    h4 Years
+//    for year in user.years
+//    ul 
+//     for day in year.days
        li #{day.mood}
-        
+//
