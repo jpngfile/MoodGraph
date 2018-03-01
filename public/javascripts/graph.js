@@ -1,29 +1,34 @@
 console.log(user);
 var CELL_SIZE = 15;
+var buffer = 3;
 
 var year = user.years[0]
 var date = year.days[0]
-var newDate = new Date(date.date);
-console.log(newDate)
+var colourMap = new Map([
+    ['unassigned', 'red'],
+    ['happy', 'yellow'],
+    ['sad', 'blue'],
+    ['neutral', 'black']
+]);
 
 var svg = d3.select('.heatmap')
     .append("svg")
-    .attr('width', 900)
+    .attr('width', 1000)
     
 svg.append('g').selectAll('rect')
     .data(year.days)
     .enter().append("rect")
     .attr('width', CELL_SIZE)
     .attr('height', CELL_SIZE)
-    .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * CELL_SIZE)
-    .attr('y', (d) => new Date(d.date).getDay() * CELL_SIZE)
+    .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
+    .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer))
     .text(function (d) {
         var date = new Date(d.date)
         return d3.timeFormat('%U')(date)    
     })
-    .style('fill', 'blue')
-    .style('stroke-width', 3)
-    .style('stroke', 'black')
+    .style('fill', (d) => colourMap.get(d.mood))
+//    .style('stroke-width', 3)
+//    .style('stroke', 'black')
     
 //d3.select("body")
 //  .style('background-color', 'red')
