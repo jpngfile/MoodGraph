@@ -16,7 +16,7 @@ exports.user_list = function(req, res) {
         })
 }
 
-exports.user_detail = function(req, res) {
+exports.user_detail = function(req, res, next) {
     async.parallel({
         user: function(callback) {
             User.findById(req.params.id)
@@ -87,3 +87,24 @@ exports.user_create_post = [
         }
     }
 ];
+
+exports.user_update_post = function(req, res, next) {
+    console.log("called correct func");
+    console.log(req.params.id)
+    async.parallel({
+        user: function(callback) {
+            User.findById(req.params.id)
+                .exec(callback)
+        }
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.user == null) {
+            var err = new Error('User not found');
+            err.status = 404;
+            return next(err);
+        }
+        //res.render('user_detail', { title: 'User detail', user: results.user })
+        res.redirect(results.user.url)
+    });
+};
+    

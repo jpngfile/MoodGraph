@@ -17,6 +17,9 @@ router.post('/user/create', user_controller.user_create_post)
 // GET request for one user
 router.get('/user/:id', user_controller.user_detail);
 
+// POST request for updating a user
+router.post('/user/:id', user_controller.user_update_post)
+
 // GET request to show all users
 router.get('/users', user_controller.user_list)
 

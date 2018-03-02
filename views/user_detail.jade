@@ -9,7 +9,20 @@ block content
     p heatmap
 
   script(src="/javascripts/graph.js")
+    
   h1 Name: #{user.username}
+
+  hr
+  h1 How do you feel today?
+  form(method='POST' action='')
+    div
+      input#happy(type='radio', name="mood", value="happy")
+      label(for="happy") Happy
+      input#sad(type='radio', name="mood", value="sad")
+      label(for="sad") Sad
+      input#neutral(type='radio', name="mood", value="neutral")
+      label(for="neutral") Neutral
+    button(type='submit') Submit
 //-    h4 Years
 //    for year in user.years
 //    ul 
