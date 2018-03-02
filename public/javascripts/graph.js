@@ -5,9 +5,9 @@ var buffer = 3;
 var year = user.years[0]
 var date = year.days[0]
 var colourMap = new Map([
-    ['unassigned', 'red'],
+    ['unassigned', 'blue'],
     ['happy', 'yellow'],
-    ['sad', 'blue'],
+    ['sad', 'red'],
     ['neutral', 'black']
 ]);
 
@@ -15,10 +15,13 @@ var svg = d3.select('.heatmap')
     .append("svg")
     .attr('width', 1000)
     
-svg.append('g').selectAll('rect')
-    .data(year.days)
+var g = svg.append('g')
+    
+var rects = g.selectAll('rect')
+    .data(user.years[0].days)
     .enter().append("rect")
-    .attr('width', CELL_SIZE)
+    
+rects.attr('width', CELL_SIZE)
     .attr('height', CELL_SIZE)
     .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
     .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer))

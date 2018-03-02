@@ -91,9 +91,16 @@ exports.user_create_post = [
 exports.user_update_post = function(req, res, next) {
     console.log("called correct func");
     console.log(req.params.id)
+    console.log(req.body.mood)
+
+    var curDate = new Date()
     async.parallel({
         user: function(callback) {
             User.findById(req.params.id)
+                .populate({
+                    path: 'years',
+                    populate: { path: 'days' },
+                })
                 .exec(callback)
         }
     }, function(err, results) {
@@ -103,8 +110,21 @@ exports.user_update_post = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
+        //console.log(results.user.years)
+        var year = results.user.years.find(function(el) {
+             return el.year === curDate.getFullYear()
+        })
+        var randomDay = year.days[0];
+        var newDay = new Day({
+            mood: req.body.mood,
+            date: randomDay.date,
+            _id: randomDay._id
+        })
+        Day.findByIdAndUpdate(randomDay._id, newDay, {}, function(err, day) {
+           if (err) { return next(err) }
+           res.redirect(results.user.url)
+        });
         //res.render('user_detail', { title: 'User detail', user: results.user })
-        res.redirect(results.user.url)
     });
 };
     
