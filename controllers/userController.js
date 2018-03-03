@@ -56,10 +56,12 @@ exports.user_create_post = [
         } else {
             var days = [];
             //var initialDate = new Date(Date.now.getFullYear(), 1, 1);
-            var initialDate = new Date()
+            var initialDate = new Date();
+            //initialDate = new Date(initialDate.getFullYear(), 0, 1);
+            console.log(initialDate)
             for (var i = 0; i < 365; i++){
-                var date = new Date();
-                date.setDate(initialDate.getDate() + i)
+                var date = new Date(initialDate.getFullYear(), 0, 1);
+                date.setDate(date.getDate() + i)
                 var day = new Day({
                     mood: 'unassigned',
                     date: date,
@@ -114,13 +116,17 @@ exports.user_update_post = function(req, res, next) {
         var year = results.user.years.find(function(el) {
              return el.year === curDate.getFullYear()
         })
-        var randomDay = year.days[0];
+        //var curDay = year.days[0];
+        var curDay = year.days.find(function (el) {
+            return el.date.getMonth() === curDate.getMonth() &&
+                el.date.getDate() === curDate.getDate();
+        })
         var newDay = new Day({
             mood: req.body.mood,
-            date: randomDay.date,
-            _id: randomDay._id
+            date: curDay.date,
+            _id: curDay._id
         })
-        Day.findByIdAndUpdate(randomDay._id, newDay, {}, function(err, day) {
+        Day.findByIdAndUpdate(curDay._id, newDay, {}, function(err, day) {
            if (err) { return next(err) }
            res.redirect(results.user.url)
         });

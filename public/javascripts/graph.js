@@ -19,9 +19,11 @@ var g = svg.append('g')
     
 var rects = g.selectAll('rect')
     .data(user.years[0].days)
-    .enter().append("rect")
-    
-rects.attr('width', CELL_SIZE)
+
+rects.exit().remove()
+
+rects.enter().append("rect")
+    .attr('width', CELL_SIZE)
     .attr('height', CELL_SIZE)
     .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
     .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer))
