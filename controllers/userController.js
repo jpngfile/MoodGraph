@@ -133,4 +133,46 @@ exports.user_update_post = function(req, res, next) {
         //res.render('user_detail', { title: 'User detail', user: results.user })
     });
 };
-    
+
+exports.user_login_post = [
+    body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
+    body('password').isLength({ min: 1}).withMessage('Password must be specified'),
+
+    sanitizeBody('username').trim().escape(),
+    sanitizeBody('password').escape(),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('login', { title: "Login", user: req.body, errors: errors.array() });
+            return;
+        } else {
+            async.parallel({
+                user: function(callback) {
+                    User.findOne({'username': req.body.username, 'password': req.body.password})
+                        .exec(callback)
+                }
+            }, function(err, results) {
+                if (err) { return next(err); }
+                if (results.user == null) {
+                    //var err = new Error('No user found with given username and password');
+                    var err = {"msg" : 'No user found with given username and password'}
+                    res.render('login', {title: 'Login', user: results.user, errors: [err]});
+                    return
+                }
+                res.redirect(results.user.url)
+            })
+        }
+    }
+]
+
+
+
+
+
+
+
+
+
+
+

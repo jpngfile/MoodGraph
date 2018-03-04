@@ -27,6 +27,6 @@ router.get('/users', user_controller.user_list)
 router.get('/login', login_controller.login_get)
 
 // POST request for login
-router.post('/login', login_controller.login_post)
+router.post('/login', user_controller.user_login_post)
 
 module.exports = router;
