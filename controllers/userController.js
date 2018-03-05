@@ -19,7 +19,7 @@ exports.user_list = function(req, res) {
 exports.user_detail = function(req, res, next) {
     async.parallel({
         user: function(callback) {
-            User.findById(req.params.id)
+            User.findById(req.params.id, {"password": 0})
                 .populate({
                     path: 'years',
                     populate: { path: 'days' },
