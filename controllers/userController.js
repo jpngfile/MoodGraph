@@ -3,8 +3,11 @@ var Year = require('../models/year');
 var Day = require('../models/day');
 
 var async = require('async');
+var bcrypt = require('bcrypt');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+
+const saltRounds = 10;
 
 exports.user_list = function(req, res) {
     
@@ -74,17 +77,20 @@ exports.user_create_post = [
             var year = new Year({
                 days: days
             })
-            var user = new User({
-                username: req.body.username,
-                password: req.body.password,
-                years: [year]
-            });
-            year.save(function (err) {
-                if (err) { return next(err); }
-            })
-            user.save(function (err) {
-                if (err) { return next(err); }
-                res.redirect('/users');
+            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+                if (err) { return next(err) }
+                var user = new User({
+                    username: req.body.username,
+                    password: hash,
+                    years: [year]
+                });
+                year.save(function (err) {
+                    if (err) { return next(err); }
+                })
+                user.save(function (err) {
+                    if (err) { return next(err); }
+                    res.redirect('/users');
+                })
             })
         }
     }
@@ -149,18 +155,22 @@ exports.user_login_post = [
         } else {
             async.parallel({
                 user: function(callback) {
-                    User.findOne({'username': req.body.username, 'password': req.body.password})
+                    User.findOne({'username': req.body.username})
                         .exec(callback)
                 }
             }, function(err, results) {
                 if (err) { return next(err); }
                 if (results.user == null) {
                     //var err = new Error('No user found with given username and password');
-                    var err = {"msg" : 'No user found with given username and password'}
+                    var err = {"msg" : 'No user found with given username.'}
                     res.render('login', {title: 'Login', user: results.user, errors: [err]});
                     return
                 }
-                res.redirect(results.user.url)
+                var hash = results.user.password;
+                bcrypt.compare(req.body.password, hash, function(err, bcryptResult) {
+                    if (err) { return next(err) }
+                    res.redirect(results.user.url)
+                })
             })
         }
     }
