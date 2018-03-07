@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-    username: {type: String, required: true, max: 100},
+    username: {type: String, unique: true, required: true, max: 100},
     password: {type: String, required: true, max: 100},
     years: [{ type: Schema.ObjectId, ref: 'Year' }],
 });
