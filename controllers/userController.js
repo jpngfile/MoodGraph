@@ -9,7 +9,7 @@ const { sanitizeBody } = require('express-validator/filter');
 
 const saltRounds = 10;
 
-exports.user_list = function(req, res) {
+exports.user_list = function(req, res, next) {
     
     User.find()
         .sort([[ 'username', 'ascending' ]])
@@ -77,21 +77,53 @@ exports.user_create_post = [
             var year = new Year({
                 days: days
             })
-            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+            async.parallel({
+                year: function(callback) {
+                    year.save(function (err) {
+                        if (err) {
+                            callback(err);
+                            return;
+                        }
+                    })
+                    return callback(null, year);
+                },
+                hash: function(callback) {
+                    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+                        if (err) {
+                            callback(err);
+                            return
+                        }
+                        return callback(null, hash);
+                    })
+                }
+            }, function (err, results) {
+                console.log ("results: " + results);
                 if (err) { return next(err) }
                 var user = new User({
                     username: req.body.username,
-                    password: hash,
-                    years: [year]
+                    password: results.hash,
+                    years: [results.year]
                 });
-                year.save(function (err) {
-                    if (err) { return next(err); }
-                })
                 user.save(function (err) {
                     if (err) { return next(err); }
                     res.redirect('/users');
-                })
-            })
+                }) 
+            });
+            //bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+            //    if (err) { return next(err) }
+            //    var user = new User({
+            //        username: req.body.username,
+            //        password: hash,
+            //        years: [year]
+            //    });
+            //    year.save(function (err) {
+            //        if (err) { return next(err); }
+            //    })
+            //    user.save(function (err) {
+            //        if (err) { return next(err); }
+            //        res.redirect('/users');
+            //    })
+            //})
         }
     }
 ];
