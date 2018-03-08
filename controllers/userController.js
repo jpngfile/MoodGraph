@@ -69,11 +69,18 @@ exports.user_create_post = [
                     mood: 'unassigned',
                     date: date,
                 });
-                day.save(function(err) {
-                     if (err) { return next(err); }
-                })
+               //   day.save(function(err) {
+               //        if (err) { return next(err); }
+               //   })
                 days.push(day);
             }
+            async.each(days, function(day, callback) {
+                day.save(function (err) {
+                    if (err) { return callback(err) }
+                })
+            }, function (err) {
+                if (err) { return next(err) }
+            });
             var year = new Year({
                 days: days
             })
