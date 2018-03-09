@@ -6,6 +6,7 @@ var UserSchema = new Schema({
     username: {type: String, unique: true, required: true, max: 100},
     password: {type: String, required: true, max: 100},
     years: [{ type: Schema.ObjectId, ref: 'Year' }],
+    created: {type: Date, default: Date.now()},
 });
 
 UserSchema
