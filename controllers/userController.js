@@ -215,6 +215,24 @@ exports.user_login_post = [
     }
 ]
 
+exports.update_user_years = function(){
+    var curDate = new Date()
+    var curYear = curDate.getFullYear();
+    async.parallel({
+        users: function(callback) {
+            User.find()
+                .populate('years')
+                .exec(callback)
+        }
+    }, function(err, results) {
+        if (err) { return next(err); }
+        async.each(results.users, function(user, callback) {
+            console.log(user.username);
+            callback()
+        })
+    });
+}
+
 
 
 
