@@ -217,18 +217,51 @@ exports.user_login_post = [
 
 exports.update_user_years = function(){
     var curDate = new Date()
-    var curYear = curDate.getFullYear();
+    //var curYear = curDate.getFullYear();
+    var curYear = 2020;
     async.parallel({
         users: function(callback) {
             User.find()
-                .populate('years')
+                .populate({
+                    path: 'years',
+                    sort: 'year'
+                })
                 .exec(callback)
         }
     }, function(err, results) {
         if (err) { return next(err); }
         async.each(results.users, function(user, callback) {
             console.log(user.username);
-            callback()
+            // Create range of years
+            var userLatestYear = user.years[0].year;
+
+            // Create a new year object for each missing year for each user
+            for (var year = userLatestYear; year <= curYear; year++){
+                var days = [];
+                for (var i = 0; i < 365; i++){
+                    var date = new Date(year, 0, 1);
+                    date.setDate(date.getDate() + i)
+                    var day = new Day({
+                        mood: 'unassigned',
+                        date: date,
+                    });
+                    days.push(day);
+                }
+                async.each(days, function(day, callback) {
+                    day.save(function (err) {
+                        if (err) { return callback(err) }
+                    })
+                }, function (err) {
+                    if (err) { return next(err) }
+                });
+                var newYear = new Year({
+                    days: days,
+                    year: year,
+                })
+                newYear.save();
+                user.years.push(newYear);
+            }
+            user.save(callback);
         })
     });
 }
