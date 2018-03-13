@@ -13,6 +13,11 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var userController = require('./controllers/userController');
 var shell = repl.start("node>");
+
+var echo = function(err, results) {
+    if (err) { console.log(err) }
+    else { console.log(results) }
+}
 shell.context.mongoose = mongoose;
 shell.context.db = db;
 shell.context.userController = userController;

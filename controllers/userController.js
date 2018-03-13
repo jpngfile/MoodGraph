@@ -217,19 +217,18 @@ exports.user_login_post = [
 
 exports.update_user_years = function(){
     var curDate = new Date()
-    //var curYear = curDate.getFullYear();
-    var curYear = 2020;
+    var curYear = curDate.getFullYear();
     async.parallel({
         users: function(callback) {
             User.find()
                 .populate({
                     path: 'years',
-                    sort: 'year'
+                    sort: {'year': -1},
                 })
                 .exec(callback)
         }
     }, function(err, results) {
-        if (err) { return next(err); }
+        if (err) { console.log(err); return; }
         async.each(results.users, function(user, callback) {
             console.log(user.username);
             // Create range of years
@@ -252,7 +251,7 @@ exports.update_user_years = function(){
                         if (err) { return callback(err) }
                     })
                 }, function (err) {
-                    if (err) { return next(err) }
+                    if (err) { return callback(err);}
                 });
                 var newYear = new Year({
                     days: days,
