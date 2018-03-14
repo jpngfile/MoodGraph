@@ -2,8 +2,6 @@ console.log(user);
 var CELL_SIZE = 15;
 var buffer = 3;
 
-//var year = user.years[0]
-//var date = year.days[0]
 var colourMap = new Map([
     ['unassigned', 'blue'],
     ['happy', 'yellow'],
