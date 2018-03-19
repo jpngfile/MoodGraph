@@ -9,6 +9,19 @@ const { sanitizeBody } = require('express-validator/filter');
 
 const saltRounds = 10;
 
+function verifySession(username, password, callback) {
+    User.findOne({'username': username})
+        .exec(function(err, user) {
+            if (err) { return callback(err)}
+            if (user == null) {
+                return callback(null, false)
+            }
+            bcrypt.compare(password, user.password, function(err, res) {
+                return callback(err, res)
+            })
+        })
+}
+
 exports.user_list = function(req, res, next) {
     
     User.find()
@@ -37,7 +50,18 @@ exports.user_detail = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('user_detail', { title: 'User detail', user: results.user })
+        if (req.session == null || req.session.user == null) {
+            return res.redirect('/login');
+        }
+        // add check that session username matches detail username
+        verifySession(results.user.username, req.session.password, function(err, verified) {
+            if (err) { return next(err) }
+            if (verified) {
+                res.render('user_detail', { title: 'User detail', user: results.user })
+            } else {
+                return next(err)
+            }
+        })
     });
 }
 
