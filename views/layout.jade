@@ -8,6 +8,7 @@ html
       a(href="/") Home
     if session && session.user
       div.header-bar.session-text
-        p Logged in as #{session.user}
+        p Logged in as 
+          a(href=session.url) #{session.user}
     hr
     block content

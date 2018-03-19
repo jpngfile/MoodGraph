@@ -139,6 +139,7 @@ exports.user_create_post = [
                     if (err) { return next(err); }
                     req.session.user = req.body.username;
                     req.session.password = req.body.password;
+                    req.session.url = user.url;
                     console.log(req.session);
                     res.redirect('/users');
                 }) 
@@ -148,10 +149,6 @@ exports.user_create_post = [
 ];
 
 exports.user_update_post = function(req, res, next) {
-    console.log("called correct func");
-    console.log(req.params.id)
-    console.log(req.body.mood)
-
     var curDate = new Date()
     async.parallel({
         user: function(callback) {
@@ -222,6 +219,8 @@ exports.user_login_post = [
                     if (err) { return next(err) }
                     req.session.user = req.body.username;
                     req.session.password = req.body.password;
+                    req.session.url = results.user.url;
+
                     console.log(req.session)
                     res.redirect(results.user.url)
                 })
