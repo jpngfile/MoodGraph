@@ -50,10 +50,9 @@ exports.user_detail = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        if (req.session == null || req.session.user == null) {
+        if (req.session == null || req.session.user == null || req.session.user !== results.user.username) {
             return res.redirect('/login');
         }
-        // add check that session username matches detail username
         verifySession(results.user.username, req.session.password, function(err, verified) {
             if (err) { return next(err) }
             if (verified) {
