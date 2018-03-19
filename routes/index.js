@@ -5,7 +5,7 @@ var user_controller = require('../controllers/userController')
 var login_controller = require('../controllers/loginController')
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Mood Graph' });
+  res.render('index', { title: 'Mood Graph', session: req.session});
 });
 
 // GET request for creating a user

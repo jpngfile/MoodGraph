@@ -4,7 +4,10 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    div
+    div.header-bar
       a(href="/") Home
+    if session && session.user
+      div.header-bar.session-text
+        p Logged in as #{session.user}
     hr
     block content
