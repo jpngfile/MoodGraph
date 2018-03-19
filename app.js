@@ -29,8 +29,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+var sessionSecret = "estranged_ostrich"
 app.use(session({
-    secret: "secret",
+    secret: sessionSecret,
     resave: true,
     saveUninitialized: true
 }));

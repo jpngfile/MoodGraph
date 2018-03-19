@@ -15,6 +15,7 @@ exports.user_list = function(req, res, next) {
         .sort([[ 'username', 'ascending' ]])
         .exec(function (err, list_users) {
             if (err) { return next(err); }
+            console.log(req.session)
             res.render('user_list', { title: 'Users', user_list: list_users })
         })
 }
@@ -113,24 +114,12 @@ exports.user_create_post = [
                 });
                 user.save(function (err) {
                     if (err) { return next(err); }
+                    req.session.user = req.body.username;
+                    req.session.password = req.body.password;
+                    console.log(req.session);
                     res.redirect('/users');
                 }) 
             });
-            //bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-            //    if (err) { return next(err) }
-            //    var user = new User({
-            //        username: req.body.username,
-            //        password: hash,
-            //        years: [year]
-            //    });
-            //    year.save(function (err) {
-            //        if (err) { return next(err); }
-            //    })
-            //    user.save(function (err) {
-            //        if (err) { return next(err); }
-            //        res.redirect('/users');
-            //    })
-            //})
         }
     }
 ];
@@ -208,6 +197,9 @@ exports.user_login_post = [
                 var hash = results.user.password;
                 bcrypt.compare(req.body.password, hash, function(err, bcryptResult) {
                     if (err) { return next(err) }
+                    req.session.user = req.body.username;
+                    req.session.password = req.body.password;
+                    console.log(req.session)
                     res.redirect(results.user.url)
                 })
             })
