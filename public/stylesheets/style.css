@@ -19,3 +19,14 @@ a {
   padding: 0;
   margin: 0
 }
+
+.mood-form > input {
+  visibility: hidden;
+  position: absolute;
+}
+
+.mood-form > input:checked + img {
+  border: 2px solid black;
+}
+
+
