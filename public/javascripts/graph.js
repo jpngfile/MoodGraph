@@ -14,8 +14,14 @@ for(var i = 0; i < user.years.length; i++){
     var svg = d3.select('.heatmap')
         .append("svg")
         .attr('width', 1000)
+
+    svg.append("text")
+      .attr("transform", "translate(20," + CELL_SIZE * 3.5 + ")rotate(-90)")
+      .attr("text-anchor", "middle")
+      .text(year.year);
         
     var g = svg.append('g')
+      .attr("transform", "translate(30, 0)")
         
     var rects = g.selectAll('rect')
         .data(year.days)
