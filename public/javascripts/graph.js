@@ -8,17 +8,27 @@ var colourMap = new Map([
     ['sad', 'red'],
     ['neutral', 'black']
 ]);
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+var now = new Date();
+console.log(moment(now).format('W'));
 for(var i = 0; i < user.years.length; i++){
     var year = user.years[i];
     var svg = d3.select('.heatmap')
         .append("svg")
         .attr('width', 1000)
+        .append("g")
 
     svg.append("text")
       .attr("transform", "translate(20," + CELL_SIZE * 3.5 + ")rotate(-90)")
       .attr("text-anchor", "middle")
       .text(year.year);
+
+    svg.selectAll('g')
+      .data(d3.range(0, 12))
+      .enter().append('text')
+      .attr("transform", (d) => "translate(" + (30 + ((CELL_SIZE + buffer) * (moment(new Date(year.year, d, 1, 0, 0, 0)).format('W') - 1))) + ", 10)")
+      .text((d) => months[d])
         
     var g = svg.append('g')
       .attr("transform", "translate(30, 0)")
@@ -32,7 +42,7 @@ for(var i = 0; i < user.years.length; i++){
         .attr('width', CELL_SIZE)
         .attr('height', CELL_SIZE)
         .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
-        .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer))
+        .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer) + 20)
         .text(function (d) {
             var date = new Date(d.date)
             return d3.timeFormat('%U')(date)    
