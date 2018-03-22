@@ -20,7 +20,7 @@ for(var i = 0; i < user.years.length; i++){
         .append("g")
 
     svg.append("text")
-      .attr("transform", "translate(20," + CELL_SIZE * 3.5 + ")rotate(-90)")
+      .attr("transform", "translate(20," + (30 + CELL_SIZE * 3.5) + ")rotate(-90)")
       .attr("text-anchor", "middle")
       .text(year.year);
 
