@@ -3,13 +3,13 @@ var CELL_SIZE = 15;
 var buffer = 3;
 
 var colourMap = new Map([
-    ['unassigned', 'blue'],
-    ['happy', 'yellow'],
-    ['sad', 'red'],
-    ['neutral', 'black'],
-    ['excited', 'purple'],
-    ['lazy', 'grey'],
-    ['productive', 'pink'],
+    ['unassigned', '#E0E0E0'],
+    ['happy', '#FFE548'],
+    ['sad', '#8EB1C7'],
+    ['neutral', '#E5F3BB'],
+    ['excited', '#AFA2FF'],
+    ['lazy', '#412722'],
+    ['frustrated', '#DF2935'],
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
