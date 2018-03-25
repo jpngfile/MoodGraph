@@ -18,22 +18,34 @@ block content
     div
       label.mood-form(for="happy") 
         input#happy(type='radio', name="mood", value="happy")
-        img(src="/images/happyIcon.png")
+        div
+          img(src="/images/happyIcon.png")
+          p.mood-label Happy
       label.mood-form(for="sad")
         input#sad(type='radio', name="mood", value="sad")
-        img(src="/images/sadIcon.png")
+        div 
+          img(src="/images/sadIcon.png")
+          p.mood-label Sad
       label.mood-form(for="neutral")
         input#neutral(type='radio', name="mood", value="neutral")
-        img(src="/images/neutralIcon.png")
+        div
+          img(src="/images/neutralIcon.png")
+          p.mood-label Neutral
       label.mood-form(for="frustrated") 
         input#frustrated(type='radio', name="mood", value="frustrated")
-        img(src="/images/frustratedIcon.png")
+        div 
+          img(src="/images/frustratedIcon.png")
+          p.mood-label Frustrated
       label.mood-form(for="excited")
         input#excited(type='radio', name="mood", value="excited")
-        img(src="/images/excitedIcon.png")
+        div
+          img(src="/images/excitedIcon.png")
+          p.mood-label Excited
       label.mood-form(for="productive")
         input#productive(type='radio', name="mood", value="productive")
-        img(src="/images/productiveIcon.png")
+        div
+          img(src="/images/productiveIcon.png")
+          p.mood-label Productive
     button(type='submit') Submit
 //-    h4 Years
 //    for year in user.years

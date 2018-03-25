@@ -20,13 +20,32 @@ a {
   margin: 0
 }
 
+.mood-form {
+  display: inline-block;  
+  width: 200px;
+}
+
 .mood-form > input {
   visibility: hidden;
   position: absolute;
 }
 
-.mood-form > input:checked + img {
+.mood-form > input + div {
+  cursor: pointer;
+}
+
+.mood-form > input:checked + div {
   border: 2px solid black;
+}
+
+
+.mood-option {
+  width: 200px;
+}
+
+.mood-label {
+  width:200px;
+  display: inline-block;
 }
 
 
