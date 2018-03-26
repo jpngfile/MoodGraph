@@ -29,7 +29,7 @@ exports.user_list = function(req, res, next) {
         .exec(function (err, list_users) {
             if (err) { return next(err); }
             console.log(req.session)
-            res.render('user_list', { title: 'Users', user_list: list_users })
+            res.render('user_list', { title: 'Users', user_list: list_users, session: req.session })
         })
 }
 
@@ -56,7 +56,7 @@ exports.user_detail = function(req, res, next) {
         verifySession(results.user.username, req.session.password, function(err, verified) {
             if (err) { return next(err) }
             if (verified) {
-                res.render('user_detail', { title: 'User detail', user: results.user })
+                res.render('user_detail', { title: 'Mood Profile', user: results.user, session: req.session })
             } else {
                 return next(err)
             }
