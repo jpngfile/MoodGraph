@@ -10,6 +10,7 @@ var colourMap = new Map([
     ['excited', '#AFA2FF'],
     ['lazy', '#412722'],
     ['frustrated', '#DF2935'],
+    ['productive', '#000000'],
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 

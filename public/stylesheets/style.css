@@ -38,14 +38,17 @@ a {
   border: 2px solid black;
 }
 
+.mood-block {
+  margin: 0px 5px;
+}
 
 .mood-option {
   width: 200px;
 }
 
 .mood-label {
-  width:200px;
   display: inline-block;
+  margin: 5px 0px;
 }
 
 
