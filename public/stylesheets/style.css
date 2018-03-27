@@ -11,6 +11,15 @@ a {
   display: inline-block;
 }
 
+.home-options {
+  list-style-type: none;
+  padding: 0px;
+}
+
+.home-options li {
+  font-size: 20px;
+}
+
 .session-text {
   float: right;
 }
