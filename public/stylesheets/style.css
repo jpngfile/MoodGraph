@@ -49,12 +49,12 @@ a {
   border: 2px solid black;
 }
 
+.mood-label-block > * {
+   vertical-align: middle;
+ }
+
 .mood-block {
   margin: 0px 5px;
-}
-
-.mood-option {
-  width: 200px;
 }
 
 .mood-label {
