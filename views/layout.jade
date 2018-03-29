@@ -7,7 +7,9 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     div.header-bar
-      a.header-title(href="/") MoodJournal
+      a.header-title(href="/")
+        img.header-logo(src="/images/headerLogo.png")
+        span MoodJournal
       if session && session.user
         div.header-bar.session-text
           p Logged in as 

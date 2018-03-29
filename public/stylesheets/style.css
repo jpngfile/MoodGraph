@@ -18,6 +18,11 @@ a {
   text-decoration: none;
 }
 
+.header-logo {
+  width: 30px;
+  margin: 0px 5px;
+}
+
 .home-options {
   list-style-type: none;
   padding: 0px;
