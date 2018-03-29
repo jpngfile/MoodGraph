@@ -8,7 +8,14 @@ a {
 }
 
 .header-bar {
-  display: inline-block;
+  position: relative;
+}
+
+.header-title {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 40px;
+  color: black;
+  text-decoration: none;
 }
 
 .home-options {
@@ -21,12 +28,18 @@ a {
 }
 
 .session-text {
-  float: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .session-text p {
   padding: 0;
   margin: 0
+}
+
+.heatmap {
+  margin: 20px 0px;
 }
 
 .mood-form {

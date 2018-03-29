@@ -4,7 +4,6 @@ block content
   script(src="https://d3js.org/d3.v4.min.js")
   script(src="https://cdn.jsdelivr.net/npm/moment@2.21.0/moment.min.js")
   script user = !{JSON.stringify(user)}
-  h1=title
 
   div.heatmap
 
@@ -64,9 +63,3 @@ block content
               rect(width=15, height=15, style="fill:#000000")
             p.mood-label Productive
     button.pure-button.pure-button-primary(type='submit') Submit
-//-    h4 Years
-//    for year in user.years
-//    ul 
-//     for day in year.days
-       li #{day.mood}
-//

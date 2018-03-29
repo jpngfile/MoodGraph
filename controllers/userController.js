@@ -56,7 +56,7 @@ exports.user_detail = function(req, res, next) {
         verifySession(results.user.username, req.session.password, function(err, verified) {
             if (err) { return next(err) }
             if (verified) {
-                res.render('user_detail', { title: 'Mood Profile', user: results.user, session: req.session })
+                res.render('user_detail', { user: results.user, session: req.session })
             } else {
                 return next(err)
             }
