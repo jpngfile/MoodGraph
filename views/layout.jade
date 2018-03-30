@@ -16,5 +16,8 @@ html
             a(href=session.url) #{session.user}
             span  | 
             a(href="/logout") logout
+       else
+        div.header-bar.session-text
+          a(href="/login") login
     hr
     block content
