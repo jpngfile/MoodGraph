@@ -29,4 +29,7 @@ router.get('/login', login_controller.login_get)
 // POST request for login
 router.post('/login', user_controller.user_login_post)
 
+// Get request for logout
+router.get('/logout', user_controller.user_logout_get)
+
 module.exports = router;

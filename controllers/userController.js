@@ -229,6 +229,11 @@ exports.user_login_post = [
     }
 ]
 
+exports.user_logout_get = function(req, res) {
+    req.session.destroy();
+    res.redirect("/")
+}
+
 exports.update_user_years = function(){
     var curDate = new Date()
     var curYear = curDate.getFullYear();

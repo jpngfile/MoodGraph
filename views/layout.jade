@@ -14,5 +14,7 @@ html
         div.header-bar.session-text
           p Logged in as 
             a(href=session.url) #{session.user}
+            span  | 
+            a(href="/logout") logout
     hr
     block content
