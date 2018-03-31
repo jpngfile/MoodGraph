@@ -51,6 +51,9 @@ a {
 .landing-page {
   height: 500px;
   position: relative;
+  background-image: url("../images/graphExample.png");
+  background-repeat: no-repeat;
+  background-size: auto;
 }
 
 .landing-text {
