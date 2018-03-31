@@ -55,6 +55,12 @@ a {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  font-family: 'Nanum Gothic', sans-serif;
+  text-align: center;
+}
+
+.landing-title {
+  font-size: 7em;
 }
 
 .heatmap {
