@@ -36,11 +36,16 @@ a {
   position: absolute;
   bottom: 0;
   right: 0;
+  font-size: 18px;
 }
 
 .session-text p {
   padding: 0;
   margin: 0;
+}
+
+.session-text a {
+  color: black;
 }
 
 .landing-page {
