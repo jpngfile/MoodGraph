@@ -3,14 +3,13 @@ extends layout
 block content
   h1=title
 
-  form(method='POST' action='')
-    div.form-group
+  form.pure-form.pure-form-stacked(method='POST' action='')
+    fieldset
       label(for='username') Username: 
-      input#username.form-control(type='text', name='username', required='true')
-      br
+      input#username.form-control(type='text', name='username', required='true', placeholder="Username")
       label(for='password') Password: 
-      input#password.form-control(type='text' name='password', required='true')
-    button.btn.btn-primary(type='submit') Enter
+      input#password.form-control(type='password' name='password', required='true', placeholder="Password")
+    button.pure-button.pure-button-primary(type='submit') Enter
   if errors
     ul
       for error in errors
