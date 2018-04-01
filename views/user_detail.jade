@@ -1,14 +1,9 @@
 extends layout
 
 block content
-  script(src="https://d3js.org/d3.v4.min.js")
-  script(src="https://cdn.jsdelivr.net/npm/moment@2.21.0/moment.min.js")
-  script user = !{JSON.stringify(user)}
 
-  div.heatmap
+  include partials/mood_graph
 
-  script(src="/javascripts/graph.js")
-    
   hr
 
   h1 How do you feel today?
