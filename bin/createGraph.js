@@ -10,7 +10,7 @@ var buffer = 3;
 
 var colours = [
   '#E0E0E0', '#FFE548', '#E5F3BB', '#AFA2FF',
-  '#412722', '#DF2935', '#000000'
+  '#8EB1C7', '#DF2935'
 ];
 
 var years = [2018];
@@ -22,21 +22,46 @@ var years = [2018];
 
 var svg = d3.select(document.body)
   .append("svg")
-  .attr('width', 100).attr('height', 100);
+  .attr('version', "1.1")
+  .attr('baseProfile', 'full')
+  .attr('xmlns', 'http://www.w3.org/2000/svg')
+  .attr('viewBox', '0 0 900 150')
+  .attr('opacity', '0.5')
+//  .attr('width', 1000).attr('height', 200);
 
-svg.append('rect')
-  .attr('x', 10).attr('y', 10)
-  .attr('width', 20).attr('height', 20)
-  .style('fill', 'red');
+for(var i = 0; i < years.length; i++){
+  var year = years[i];
+  var days = makeYear(year);
 
+  var g = svg.append('g')
+  var rects = g.selectAll('rect')
+    .data(days)
+  
+  rects.enter().append("rect")
+      .attr('width', CELL_SIZE)
+      .attr('height', CELL_SIZE)
+      .attr('x', (d) => d3.timeFormat('%U')(new Date(d)) * (CELL_SIZE + buffer))
+      .attr('y', (d) => new Date(d).getDay() * (CELL_SIZE + buffer) + 20)
+      .style('fill', (d) => getRandomColour(colours));
+
+}
 console.log(d3.select(document.body).html());
 
       
-      
-//for(var i = 0; i < years.length; i++){
-//  var year = years[i];
-//
-//}
+function makeYear(year) {
+  var days = [];
+  for (var i = 0; i < 365; i++){
+    var date = new Date(year, 0, 1);
+    date.setDate(date.getDate() + i);
+    days.push(date)
+  }
+  return days;
+} 
+
+function getRandomColour(colours) {
+  var index = Math.floor(Math.random() * colours.length);
+  return colours[index];
+}
 
 // weigths is a list of numbers that add to 1
 // if sum < 1, then last number gets remaining weight

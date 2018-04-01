@@ -51,8 +51,7 @@ a {
 .landing-page {
   height: 500px;
   position: relative;
-  background-image: url("../images/graphExample.png");
-  background-repeat: no-repeat;
+  background: url("../images/landingImage.svg");
   background-size: auto;
 }
 
@@ -70,6 +69,10 @@ a {
 .landing-title {
   font-size: 7em;
   font-family: 'Berkshire Swash', cursive;
+}
+
+.landing-subtitle {
+  font-weight: bold;
 }
 
 .heatmap {
