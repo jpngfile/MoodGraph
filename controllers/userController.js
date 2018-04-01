@@ -65,7 +65,7 @@ exports.user_detail = function(req, res, next) {
 }
 
 exports.user_create_get = function(req, res) {
-    res.render('signup', { title: "Signup"});
+    res.render('signup', { title: "Signup", session: req.session});
 }
 
 exports.user_create_post = [
@@ -78,13 +78,11 @@ exports.user_create_post = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.render('signup', { title: "Signup", user: req.body, errors: errors.array() });
+            res.render('signup', { title: "Signup", user: req.body, errors: errors.array(), session: req.session });
             return;
         } else {
             var days = [];
-            //var initialDate = new Date(Date.now.getFullYear(), 1, 1);
             var initialDate = new Date();
-            //initialDate = new Date(initialDate.getFullYear(), 0, 1);
             console.log(initialDate)
             for (var i = 0; i < 365; i++){
                 var date = new Date(initialDate.getFullYear(), 0, 1);
@@ -93,9 +91,6 @@ exports.user_create_post = [
                     mood: 'unassigned',
                     date: date,
                 });
-               //   day.save(function(err) {
-               //        if (err) { return next(err); }
-               //   })
                 days.push(day);
             }
             async.each(days, function(day, callback) {
@@ -198,7 +193,7 @@ exports.user_login_post = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.render('login', { title: "Login", user: req.body, errors: errors.array() });
+            res.render('login', { title: "Login", user: req.body, errors: errors.array(), session: req.session});
             return;
         } else {
             async.parallel({
@@ -211,7 +206,7 @@ exports.user_login_post = [
                 if (results.user == null) {
                     //var err = new Error('No user found with given username and password');
                     var err = {"msg" : 'No user found with given username.'}
-                    res.render('login', {title: 'Login', user: results.user, errors: [err]});
+                    res.render('login', {title: 'Login', user: results.user, errors: [err], session: req.session});
                     return
                 }
                 var hash = results.user.password;
