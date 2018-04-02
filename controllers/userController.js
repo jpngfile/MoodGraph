@@ -178,6 +178,7 @@ exports.user_update_post = function(req, res, next) {
         Day.findByIdAndUpdate(curDay._id, newDay, {}, function(err, day) {
            if (err) { return next(err) }
            res.redirect(results.user.url)
+           //res.render('partials/mood_graph', {user: results.user, layout: false});
         });
         //res.render('user_detail', { title: 'User detail', user: results.user })
     });

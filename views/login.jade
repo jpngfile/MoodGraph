@@ -1,15 +1,16 @@
 extends layout
 
 block content
-  h1=title
+  div.login-form
+    h1=title
 
-  form.pure-form.pure-form-stacked(method='POST' action='')
-    fieldset
-      label(for='username') Username: 
-      input#username.form-control(type='text', name='username', required='true', placeholder="Username")
-      label(for='password') Password: 
-      input#password.form-control(type='password' name='password', required='true', placeholder="Password")
-    button.pure-button.pure-button-primary(type='submit') Enter
+    form.pure-form.pure-form-stacked.center-form(method='POST' action='')
+      fieldset
+        label(for='username') Username 
+        input#username.form-control(type='text', name='username', required='true', placeholder="Username")
+        label(for='password') Password 
+        input#password.form-control(type='password' name='password', required='true', placeholder="Password")
+      button.pure-button.pure-button-primary(type='submit') Enter
   if errors
     ul
       for error in errors

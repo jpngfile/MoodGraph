@@ -8,7 +8,6 @@ var colourMap = new Map([
     ['sad', '#8EB1C7'],
     ['neutral', '#E5F3BB'],
     ['excited', '#AFA2FF'],
-    ['lazy', '#412722'],
     ['frustrated', '#DF2935'],
     ['productive', '#000000'],
 ]);
@@ -21,9 +20,6 @@ for(var i = 0; i < user.years.length; i++){
     var svg = d3.select('.heatmap')
         .append("svg")
         .attr('width', 1000)
-        .attr('version', "1.1")
-        .attr('baseProfile', 'full')
-        .attr('xmlns', 'http://www.w3.org/2000/svg')
         .append("g")
 
     svg.append("text")

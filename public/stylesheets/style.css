@@ -79,6 +79,32 @@ a {
   margin: 20px 0px;
 }
 
+.login-form {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}
+
+.center-form {
+  text-align: left;
+  margin: auto;
+  width: 300px;
+}
+
+.center-form input {
+  width: 100%;
+}
+
+.center-form button {
+  width: 100%;
+}
+
+.center-form label {
+  font-weight: bold;
+  font-family: 'Nanum Gothic', sans-serif;
+  margin-top: 10px;
+}
+
 .mood-form {
   display: inline-block;  
   margin: 0px 5px 5px 0px;
