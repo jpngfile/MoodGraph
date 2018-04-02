@@ -145,24 +145,20 @@ exports.user_create_post = [
 
 exports.user_update_post = function(req, res, next) {
     var curDate = new Date()
-    async.parallel({
-        user: function(callback) {
-            User.findById(req.params.id)
-                .populate({
-                    path: 'years',
-                    populate: { path: 'days' },
-                })
-                .exec(callback)
-        }
-    }, function(err, results) {
+    User.findById(req.params.id)
+    .populate({
+        path: 'years',
+        populate: { path: 'days' },
+    })
+    .exec(function(err, user) {
         if (err) { return next(err); }
-        if (results.user == null) {
+        if (user == null) {
             var err = new Error('User not found');
             err.status = 404;
             return next(err);
         }
-        //console.log(results.user.years)
-        var year = results.user.years.find(function(el) {
+        //console.log(user.years)
+        var year = user.years.find(function(el) {
              return el.year === curDate.getFullYear()
         })
         //var curDay = year.days[0];
@@ -177,8 +173,8 @@ exports.user_update_post = function(req, res, next) {
         })
         Day.findByIdAndUpdate(curDay._id, newDay, {}, function(err, day) {
            if (err) { return next(err) }
-           res.redirect(results.user.url)
-           //res.render('partials/mood_graph', {user: results.user, layout: false});
+           res.redirect(user.url)
+           //res.render('partials/mood_graph', {user: user, layout: false});
         });
         //res.render('user_detail', { title: 'User detail', user: results.user })
     });
