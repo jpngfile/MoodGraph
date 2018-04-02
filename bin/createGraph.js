@@ -7,25 +7,22 @@ global.document = document;
 
 var CELL_SIZE = 15;
 var buffer = 3;
+var height = 150;
 
 var colours = [
   '#E0E0E0', '#FFE548', '#E5F3BB', '#AFA2FF',
   '#8EB1C7', '#DF2935'
 ];
 
-var years = [2018];
+var years = [2015, 2016, 2017, 2018];
 
-//var script = document.createElement('script');
-//script.src = 'http://d3js.org/d3.v3.min.js'
-//var head= window.document.getElementsByTagName('head')[0];
-//head.appendChild(script);
-
+var totalHeight = height*years.length;
 var svg = d3.select(document.body)
   .append("svg")
   .attr('version', "1.1")
   .attr('baseProfile', 'full')
   .attr('xmlns', 'http://www.w3.org/2000/svg')
-  .attr('viewBox', '0 0 900 150')
+  .attr('viewBox', '0 0 900 ' + totalHeight)
   .attr('opacity', '0.5')
 //  .attr('width', 1000).attr('height', 200);
 
@@ -41,7 +38,7 @@ for(var i = 0; i < years.length; i++){
       .attr('width', CELL_SIZE)
       .attr('height', CELL_SIZE)
       .attr('x', (d) => d3.timeFormat('%U')(new Date(d)) * (CELL_SIZE + buffer))
-      .attr('y', (d) => new Date(d).getDay() * (CELL_SIZE + buffer) + 20)
+      .attr('y', (d) => new Date(d).getDay() * (CELL_SIZE + buffer) + 20 + (height * i))
       .style('fill', (d) => getRandomColour(colours));
 
 }
