@@ -68,6 +68,32 @@ exports.user_create_get = function(req, res) {
     res.render('signup', { title: "Signup", session: req.session});
 }
 
+function create_new_year(year, finalCallback){
+    var days = [];
+    for (var i = 0; i < 365; i++){
+        var date = new Date(year, 0, 1);
+        date.setDate(date.getDate() + i)
+        var day = new Day({
+            mood: 'unassigned',
+            date: date,
+        });
+        days.push(day);
+    }
+    async.each(days, function(day, callback) {
+        day.save(function (err) {
+            if (err) { return callback(err) }
+            return callback()
+        })
+    }, function (err) {
+        if (err) { return finalCallback(err);}
+        var newYear = new Year({
+            days: days,
+            year: year,
+        })
+        newYear.save(finalCallback);
+    });
+}
+
 exports.user_create_post = [
     body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
     body('password').isLength({ min: 1}).withMessage('Password must be specified'),
@@ -81,37 +107,12 @@ exports.user_create_post = [
             res.render('signup', { title: "Signup", user: req.body, errors: errors.array(), session: req.session });
             return;
         } else {
-            var days = [];
+
             var initialDate = new Date();
-            console.log(initialDate)
-            for (var i = 0; i < 365; i++){
-                var date = new Date(initialDate.getFullYear(), 0, 1);
-                date.setDate(date.getDate() + i)
-                var day = new Day({
-                    mood: 'unassigned',
-                    date: date,
-                });
-                days.push(day);
-            }
-            async.each(days, function(day, callback) {
-                day.save(function (err) {
-                    if (err) { return callback(err) }
-                })
-            }, function (err) {
-                if (err) { return next(err) }
-            });
-            var year = new Year({
-                days: days
-            })
+            var currentYear = initialDate.getFullYear();
             async.parallel({
                 year: function(callback) {
-                    year.save(function (err) {
-                        if (err) {
-                            callback(err);
-                            return;
-                        }
-                    })
-                    return callback(null, year);
+                    create_new_year(currentYear, callback) 
                 },
                 hash: function(callback) {
                     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
