@@ -12,6 +12,6 @@ block content
         input#password.form-control(type='password' name='password', required='true', placeholder="Password")
       button.pure-button.pure-button-primary(type='submit') Enter
   if errors
-    ul
+    ul.login-errors
       for error in errors
         li!=error.msg

@@ -2,7 +2,6 @@ console.log(user);
 var CELL_SIZE = 15;
 var buffer = 3;
 
-var height = 150;
 
 var colourMap = new Map([
     ['unassigned', '#E0E0E0'],

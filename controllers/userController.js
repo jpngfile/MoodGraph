@@ -198,6 +198,11 @@ exports.user_login_post = [
             var hash = user.password;
             bcrypt.compare(req.body.password, hash, function(err, bcryptResult) {
                 if (err) { return next(err) }
+                if (!bcryptResult) {
+                    var err = {"msg" : 'Incorrect password.'}
+                    res.render('login', {title: 'Login', user: user, errors: [err], session: req.session});
+                    return
+                }
                 req.session.user = req.body.username;
                 req.session.password = req.body.password;
                 req.session.url = user.url;
