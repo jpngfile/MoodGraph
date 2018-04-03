@@ -24,7 +24,6 @@ function verifySession(username, password, callback) {
 }
 
 exports.user_list = function(req, res, next) {
-    
     User.find()
         .sort([[ 'username', 'ascending' ]])
         .exec(function (err, list_users) {
