@@ -194,9 +194,8 @@ exports.user_login_post = [
         .exec(function(err, user) {
             if (err) { return next(err); }
             if (user == null) {
-                //var err = new Error('No user found with given username and password');
                 var err = {"msg" : 'No user found with given username.'}
-                res.render('login', {title: 'Login', user: user, errors: [err], session: req.session});
+                res.render('login', {title: 'Login', errors: [err], session: req.session});
                 return
             }
             var hash = user.password;
@@ -204,7 +203,7 @@ exports.user_login_post = [
                 if (err) { return next(err) }
                 if (!bcryptResult) {
                     var err = {"msg" : 'Incorrect password.'}
-                    res.render('login', {title: 'Login', user: user, errors: [err], session: req.session});
+                    res.render('login', {title: 'Login', username: req.body.username, errors: [err], session: req.session});
                     return
                 }
                 req.session.user = req.body.username;

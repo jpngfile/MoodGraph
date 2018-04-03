@@ -7,7 +7,7 @@ block content
     form.pure-form.pure-form-stacked.center-form(method='POST' action='')
       fieldset
         label(for='username') Username 
-        input#username.form-control(type='text', name='username', required='true', placeholder="Username")
+        input#username.form-control(type='text', name='username', required='true', value=(username ? username : '') placeholder="Username")
         label(for='password') Password 
         input#password.form-control(type='password' name='password', required='true', placeholder="Password")
       button.pure-button.pure-button-primary(type='submit') Enter
