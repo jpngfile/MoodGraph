@@ -185,32 +185,27 @@ exports.user_login_post = [
         if (!errors.isEmpty()) {
             res.render('login', { title: "Login", user: req.body, errors: errors.array(), session: req.session});
             return;
-        } else {
-            async.parallel({
-                user: function(callback) {
-                    User.findOne({'username': req.body.username})
-                        .exec(callback)
-                }
-            }, function(err, results) {
-                if (err) { return next(err); }
-                if (results.user == null) {
-                    //var err = new Error('No user found with given username and password');
-                    var err = {"msg" : 'No user found with given username.'}
-                    res.render('login', {title: 'Login', user: results.user, errors: [err], session: req.session});
-                    return
-                }
-                var hash = results.user.password;
-                bcrypt.compare(req.body.password, hash, function(err, bcryptResult) {
-                    if (err) { return next(err) }
-                    req.session.user = req.body.username;
-                    req.session.password = req.body.password;
-                    req.session.url = results.user.url;
-
-                    console.log(req.session)
-                    res.redirect(results.user.url)
-                })
-            })
         }
+        User.findOne({'username': req.body.username})
+        .exec(function(err, user) {
+            if (err) { return next(err); }
+            if (user == null) {
+                //var err = new Error('No user found with given username and password');
+                var err = {"msg" : 'No user found with given username.'}
+                res.render('login', {title: 'Login', user: user, errors: [err], session: req.session});
+                return
+            }
+            var hash = user.password;
+            bcrypt.compare(req.body.password, hash, function(err, bcryptResult) {
+                if (err) { return next(err) }
+                req.session.user = req.body.username;
+                req.session.password = req.body.password;
+                req.session.url = user.url;
+
+                console.log(req.session)
+                res.redirect(user.url)
+            })
+        })
     }
 ]
 
