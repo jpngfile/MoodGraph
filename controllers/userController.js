@@ -35,33 +35,37 @@ exports.user_list = function(req, res, next) {
 }
 
 exports.user_detail = function(req, res, next) {
-    async.parallel({
-        user: function(callback) {
+    async.waterfall([
+        function(callback) {
             User.findById(req.params.id, {"password": 0})
                 .populate({
                     path: 'years',
                     populate: { path: 'days' },
                 })
                 .exec(callback)
-        }
-    }, function(err, results) {
-        if (err) { return next(err); }
-        if (results.user == null) {
-            var err = new Error('User not found');
-            err.status = 404;
-            return next(err);
-        }
-        if (req.session == null || req.session.user == null || req.session.user !== results.user.username) {
-            return res.redirect('/login');
-        }
-        verifySession(results.user.username, req.session.password, function(err, verified) {
-            if (err) { return next(err) }
-            if (verified) {
-                res.render('user_detail', { user: results.user, session: req.session })
-            } else {
-                return next(err)
+        },
+        function(user, callback) {
+            if (user == null) {
+                var err = new Error('User not found');
+                err.status = 404;
+                return callback(err);
             }
-        })
+            if (req.session == null ||
+                req.session.user == null ||
+                req.session.user !== user.username) {
+                return res.redirect('/login');
+            }
+            verifySession(user.username, req.session.password, function(err, verified){
+                callback(err, {'verified': verified, 'user': user});   
+            })
+        }
+    ], function(err, results) {
+        if (err) { return next(err); }
+        if (results.verified) {
+            res.render('user_detail', { user: results.user, session: req.session })
+        } else {
+            res.redirect('/login');
+        }
     });
 }
 
