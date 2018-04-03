@@ -111,32 +111,39 @@ exports.user_create_post = [
             res.render('signup', { title: "Signup", user: req.body, errors: errors.array(), session: req.session });
             return;
         }
-        var currentYear = new Date().getFullYear();
-        async.parallel({
-            year: function(callback) {
-                create_new_year(currentYear, callback) 
-            },
-            hash: function(callback) {
-                bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-                    if (err) { return callback(err); }
-                    return callback(null, hash);
-                })
+        User.findOne({'username': req.body.username}).exec(function(err, existingUser) {
+            if (err) { return next(err); }
+            if (existingUser) {
+                var error = {"msg": "Username already exists."};
+                return res.render('signup', {title: "Signup", errors: [error], session: req.session});
             }
-        }, function (err, results) {
-            if (err) { return next(err) }
-            var user = new User({
-                username: req.body.username,
-                password: results.hash,
-                years: [results.year]
+            var currentYear = new Date().getFullYear();
+            async.parallel({
+                year: function(callback) {
+                    create_new_year(currentYear, callback) 
+                },
+                hash: function(callback) {
+                    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+                        if (err) { return callback(err); }
+                        return callback(null, hash);
+                    })
+                }
+            }, function (err, results) {
+                if (err) { return next(err) }
+                var user = new User({
+                    username: req.body.username,
+                    password: results.hash,
+                    years: [results.year]
+                });
+                user.save(function (err) {
+                    if (err) { return next(err); }
+                    req.session.user = req.body.username;
+                    req.session.password = req.body.password;
+                    req.session.url = user.url;
+                    res.redirect(user.url);
+                }) 
             });
-            user.save(function (err) {
-                if (err) { return next(err); }
-                req.session.user = req.body.username;
-                req.session.password = req.body.password;
-                req.session.url = user.url;
-                res.redirect(user.url);
-            }) 
-        });
+        })
     }
 ];
 
