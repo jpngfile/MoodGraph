@@ -4,6 +4,7 @@ var Day = require('../models/day');
 
 var async = require('async');
 var bcrypt = require('bcrypt');
+const _ = require('underscore');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
@@ -222,60 +223,35 @@ exports.user_logout_get = function(req, res) {
 exports.update_user_years = function(){
     var curDate = new Date()
     var curYear = curDate.getFullYear();
-    async.parallel({
-        users: function(callback) {
-            User.find()
-                .populate({
-                    path: 'years',
-                    sort: {'year': -1},
-                })
-                .exec(callback)
-        }
-    }, function(err, results) {
+    User.find()
+    .populate({
+        path: 'years',
+        options: {sort: {'year': -1}},
+    })
+    .exec(function(err, users) {
         if (err) { console.log(err); return; }
-        async.each(results.users, function(user, callback) {
-            console.log(user.username);
+        async.each(users, function(user, callback) {
             // Create range of years
             var userLatestYear = user.years[0].year;
-
-            // Create a new year object for each missing year for each user
-            for (var year = userLatestYear; year <= curYear; year++){
-                var days = [];
-                for (var i = 0; i < 365; i++){
-                    var date = new Date(year, 0, 1);
-                    date.setDate(date.getDate() + i)
-                    var day = new Day({
-                        mood: 'unassigned',
-                        date: date,
-                    });
-                    days.push(day);
-                }
-                async.each(days, function(day, callback) {
-                    day.save(function (err) {
-                        if (err) { return callback(err) }
-                    })
-                }, function (err) {
-                    if (err) { return callback(err);}
-                });
-                var newYear = new Year({
-                    days: days,
-                    year: year,
+            var years = _.range(userLatestYear + 1, curYear + 1);
+            async.each(years, function(year, yearCallback) {
+                create_new_year(year, function(err, newYear) {
+                    if (err) { return yearCallback(err); }
+                    user.years.push(newYear);
+                    yearCallback();
                 })
-                newYear.save();
-                user.years.push(newYear);
+            }, function(err) {
+                if (err) { return callback(err); }
+                user.save(callback);
+            })
+
+        }, function(err) {
+            if (err) {
+                console.log (err);
+            } else {
+                console.log ("All users updated");
             }
-            user.save(callback);
         })
     });
 }
-
-
-
-
-
-
-
-
-
-
 

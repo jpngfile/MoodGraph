@@ -1,6 +1,7 @@
 var net = require("net");
 var repl = require('repl');
 var mongoose = require('mongoose');
+var _ = require('underscore');
 //connections = 0;
 //
 //net.createServer(function (socket) {
@@ -20,5 +21,6 @@ var echo = function(err, results) {
 }
 shell.context.mongoose = mongoose;
 shell.context.db = db;
+shell.context._ = _;
 shell.context.userController = userController;
 
