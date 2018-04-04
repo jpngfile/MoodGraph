@@ -119,6 +119,7 @@ a {
   display: inline-block;  
   margin: 0px 5px 5px 0px;
   border: black solid 1px;
+  border-radius: 5px;
 }
 
 .mood-form > input {
@@ -133,6 +134,7 @@ a {
 
 .mood-form > input:checked + div {
   border: 2px solid black;
+  border-radius: 5px;
 }
 
 .mood-label-block > * {
