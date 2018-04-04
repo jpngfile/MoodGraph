@@ -184,6 +184,10 @@ exports.user_update_post = function(req, res, next) {
     });
 };
 
+exports.login_get = function (req, res) {
+    res.render('login', { title: "Login", session: req.session });
+}
+
 exports.user_login_post = [
     body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
     body('password').isLength({ min: 1}).withMessage('Password must be specified'),

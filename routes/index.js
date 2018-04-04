@@ -24,7 +24,7 @@ router.post('/user/:id', user_controller.user_update_post)
 router.get('/users', user_controller.user_list)
 
 // GET request for login
-router.get('/login', login_controller.login_get)
+router.get('/login', user_controller.login_get)
 
 // POST request for login
 router.post('/login', user_controller.user_login_post)
