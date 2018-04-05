@@ -121,7 +121,6 @@ exports.user_create_get = function(req, res) {
     res.render('signup', { title: "Signup", session: req.session});
 }
 
-
 exports.user_create_post = [
     body('username').isLength({ min: 1}).trim().withMessage('Username must be specified')
         .isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
@@ -129,6 +128,7 @@ exports.user_create_post = [
 
     sanitizeBody('username').trim().escape(),
     sanitizeBody('password').escape(),
+    sanitizeBody('passwordAgain').escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
@@ -136,6 +136,7 @@ exports.user_create_post = [
             res.render('signup', { title: "Signup", user: req.body, errors: errors.array(), session: req.session });
             return;
         }
+
         // This can be refactored to use the ES7 await function to reduce depth. Still experimental though.
         // Alternatively, major refactoring with Promises and two catch statements
         User.findOne({'username': req.body.username}).exec(function(err, existingUser) {
@@ -143,6 +144,10 @@ exports.user_create_post = [
             if (existingUser) {
                 var error = {"msg": "Username already exists."};
                 return res.render('signup', {title: "Signup", errors: [error], session: req.session});
+            }
+            if (req.body.password !== req.body.passwordAgain) {
+                var error = {"msg": "Passwords do not match."};
+                return res.render('signup', {title: "Signup", errors: [error], username: req.body.username, session: req.session});
             }
             create_new_user(req.body.username, req.body.password, function(err, user) {
                 if (err) { return next(err); }
