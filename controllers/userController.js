@@ -23,55 +23,6 @@ function verifySession(username, password, callback) {
         })
 }
 
-exports.user_list = function(req, res, next) {
-    User.find()
-        .sort([[ 'username', 'ascending' ]])
-        .exec(function (err, list_users) {
-            if (err) { return next(err); }
-            console.log(req.session)
-            res.render('user_list', { title: 'Users', user_list: list_users, session: req.session })
-        })
-}
-
-exports.user_detail = function(req, res, next) {
-    async.waterfall([
-        function(callback) {
-            User.findById(req.params.id, {"password": 0})
-                .populate({
-                    path: 'years',
-                    populate: { path: 'days' },
-                })
-                .exec(callback)
-        },
-        function(user, callback) {
-            if (user == null) {
-                var err = new Error('User not found');
-                err.status = 404;
-                return callback(err);
-            }
-            if (req.session == null ||
-                req.session.user == null ||
-                req.session.user !== user.username) {
-                return res.redirect('/login');
-            }
-            verifySession(user.username, req.session.password, function(err, verified){
-                callback(err, {'verified': verified, 'user': user});   
-            })
-        }
-    ], function(err, results) {
-        if (err) { return next(err); }
-        if (results.verified) {
-            res.render('user_detail', { user: results.user, session: req.session })
-        } else {
-            res.redirect('/login');
-        }
-    });
-}
-
-exports.user_create_get = function(req, res) {
-    res.render('signup', { title: "Signup", session: req.session});
-}
-
 function create_new_year(year, finalCallback){
     var days = [];
     for (var i = 0; i < 365; i++){
@@ -121,8 +72,59 @@ function create_new_user(username, password, callback) {
     });
 }
 
+exports.user_list = function(req, res, next) {
+    User.find()
+        .sort([[ 'username', 'ascending' ]])
+        .exec(function (err, list_users) {
+            if (err) { return next(err); }
+            console.log(req.session)
+            res.render('user_list', { title: 'Users', user_list: list_users, session: req.session })
+        })
+}
+
+exports.user_detail = function(req, res, next) {
+    async.waterfall([
+        function(callback) {
+            User.findById(req.params.id, {"password": 0})
+                .populate({
+                    path: 'years',
+                    populate: { path: 'days' },
+                })
+                .exec(callback)
+        },
+        function(user, callback) {
+            if (user == null) {
+                var err = new Error('User not found');
+                err.status = 404;
+                return callback(err);
+            }
+            if (req.session == null ||
+                req.session.user == null ||
+                req.session.user !== user.username) {
+                return res.redirect('/login');
+            }
+            verifySession(user.username, req.session.password, function(err, verified){
+                callback(err, {'verified': verified, 'user': user});   
+            })
+        }
+    ], function(err, results) {
+        if (err) { return next(err); }
+        if (results.verified) {
+            res.render('user_detail', { user: results.user, session: req.session })
+        } else {
+            res.redirect('/login');
+        }
+    });
+}
+
+exports.user_create_get = function(req, res) {
+    res.render('signup', { title: "Signup", session: req.session});
+}
+
+
 exports.user_create_post = [
-    body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
+    body('username').isLength({ min: 1}).trim().withMessage('Username must be specified')
+        .isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
     body('password').isLength({ min: 1}).withMessage('Password must be specified'),
 
     sanitizeBody('username').trim().escape(),
@@ -134,6 +136,8 @@ exports.user_create_post = [
             res.render('signup', { title: "Signup", user: req.body, errors: errors.array(), session: req.session });
             return;
         }
+        // This can be refactored to use the ES7 await function to reduce depth. Still experimental though.
+        // Alternatively, major refactoring with Promises and two catch statements
         User.findOne({'username': req.body.username}).exec(function(err, existingUser) {
             if (err) { return next(err); }
             if (existingUser) {
@@ -165,11 +169,9 @@ exports.user_update_post = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        //console.log(user.years)
         var year = user.years.find(function(el) {
              return el.year === curDate.getFullYear()
         })
-        //var curDay = year.days[0];
         var curDay = year.days.find(function (el) {
             return el.date.getMonth() === curDate.getMonth() &&
                 el.date.getDate() === curDate.getDate();
