@@ -98,6 +98,29 @@ function create_new_year(year, finalCallback){
     });
 }
 
+function create_new_user(username, password, callback) {
+    var currentYear = new Date().getFullYear();
+    async.parallel({
+        year: function(callback) {
+            create_new_year(currentYear, callback) 
+        },
+        hash: function(callback) {
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+                if (err) { return callback(err); }
+                return callback(null, hash);
+            })
+        }
+    }, function (err, results) {
+        if (err) { return callback(err) }
+        var user = new User({
+            username: username,
+            password: results.hash,
+            years: [results.year]
+        });
+        user.save(callback) 
+    });
+}
+
 exports.user_create_post = [
     body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
     body('password').isLength({ min: 1}).withMessage('Password must be specified'),
@@ -117,31 +140,12 @@ exports.user_create_post = [
                 var error = {"msg": "Username already exists."};
                 return res.render('signup', {title: "Signup", errors: [error], session: req.session});
             }
-            var currentYear = new Date().getFullYear();
-            async.parallel({
-                year: function(callback) {
-                    create_new_year(currentYear, callback) 
-                },
-                hash: function(callback) {
-                    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-                        if (err) { return callback(err); }
-                        return callback(null, hash);
-                    })
-                }
-            }, function (err, results) {
-                if (err) { return next(err) }
-                var user = new User({
-                    username: req.body.username,
-                    password: results.hash,
-                    years: [results.year]
-                });
-                user.save(function (err) {
-                    if (err) { return next(err); }
-                    req.session.user = req.body.username;
-                    req.session.password = req.body.password;
-                    req.session.url = user.url;
-                    res.redirect(user.url);
-                }) 
+            create_new_user(req.body.username, req.body.password, function(err, user) {
+                if (err) { return next(err); }
+                req.session.user = req.body.username;
+                req.session.password = req.body.password;
+                req.session.url = user.url;
+                res.redirect(user.url);
             });
         })
     }

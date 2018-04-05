@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 var user_controller = require('../controllers/userController')
-var login_controller = require('../controllers/loginController')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Mood Journal', session: req.session});
