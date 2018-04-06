@@ -10,6 +10,27 @@ const { sanitizeBody } = require('express-validator/filter');
 
 const saltRounds = 10;
 
+class MoodOption {
+    constructor(mood, color, imagePath) {
+        this.mood = mood;
+        this.color = color;
+        this.imagePath = imagePath;
+    }
+
+    get label() {
+        return this.mood.charAt(0).toUpperCase() + this.mood.slice(1);
+    }
+}
+
+var defaultMoodOptions = [
+    new MoodOption('happy', '#FFE548', '/images/happyIcon.png'),
+    new MoodOption('sad', '#8EB1C7', '/images/sadIcon.png'),
+    new MoodOption('neutral', '#E5F3BB', '/images/neutralIcon.png'),
+    new MoodOption('frustrated', '#DF2935', '/images/frustratedIcon.png'),
+    new MoodOption('excited', '#AFA2FF', '/images/excitedIcon.png'),
+    new MoodOption('productive', '#000000', '/images/productiveIcon.png'),
+];
+
 function verifySession(username, session, callback) {
     if (session == null ||
         session.user == null ||
@@ -109,7 +130,7 @@ exports.user_detail = function(req, res, next) {
     ], function(err, results) {
         if (err) { return next(err); }
         if (results.verified) {
-            res.render('user_detail', { title: `Mood Journal (${results.user.username})`, user: results.user })
+            res.render('user_detail', { title: `Mood Journal (${results.user.username})`, user: results.user, options: defaultMoodOptions })
         } else {
             res.redirect('/login');
         }
@@ -227,8 +248,6 @@ exports.user_login_post = [
                     res.render('login', {title: 'Login', username: req.body.username, errors: [err]});
                     return
                 }
-                //req.session.user = req.body.username;
-                //req.session.password = req.body.password;
                 req.session.user = user.username;
                 req.session.password = user.password;
                 req.session.url = user.url;
@@ -245,6 +264,7 @@ exports.user_logout_get = function(req, res) {
     res.redirect("/")
 }
 
+// Adds years to all users from their latest year to the current year
 exports.update_user_years = function(){
     var curDate = new Date()
     var curYear = curDate.getFullYear();
@@ -256,7 +276,6 @@ exports.update_user_years = function(){
     .exec(function(err, users) {
         if (err) { console.log(err); return; }
         async.each(users, function(user, callback) {
-            // Create range of years
             var userLatestYear = user.years[0].year;
             var years = _.range(userLatestYear + 1, curYear + 1);
             async.each(years, function(year, yearCallback) {
