@@ -1,19 +1,5 @@
-extends layout
+extends login
 
-block content
-  div.login-form
-    h1=title
-    
-    form.pure-form.pure-form-stacked.center-form.black-border-form(method='POST' action='')
-      fieldset
-        label(for='username') Username 
-        input#username.form-control(type='text', name='username', required='true', value=(username ? username : ''), placeholder="Username", spellcheck='false')
-        label(for='password') Password 
-        input#password.form-control(type='password' name='password', required='true', placeholder="Password")
-        label(for'password-again') Password (again)
-        input#password-again.form-control(type='password' name='passwordAgain', required='true', placeholder="Password (again)")
-      button.pure-button.pure-button-primary(type='submit') Submit
-  if errors
-    ul.login-errors
-      for error in errors
-        li!=error.msg
+block fields
+  label(for'password-again') Password (again)
+  input#password-again.form-control(type='password' name='passwordAgain', required='true', placeholder="Password (again)")

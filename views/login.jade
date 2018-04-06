@@ -10,6 +10,7 @@ block content
         input#username.form-control(type='text', name='username', required='true', value=(username ? username : '') placeholder="Username", spellcheck='false')
         label(for='password') Password 
         input#password.form-control(type='password' name='password', required='true', placeholder="Password")
+        block fields
       button.pure-button.pure-button-primary(type='submit') Enter
   if errors
     ul.login-errors
