@@ -4,7 +4,7 @@ var router = express.Router();
 var user_controller = require('../controllers/userController')
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Mood Journal', session: req.session});
+  res.render('index', { title: 'Mood Journal' });
 });
 
 // GET request for creating a user

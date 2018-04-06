@@ -78,7 +78,7 @@ exports.user_list = function(req, res, next) {
         .exec(function (err, list_users) {
             if (err) { return next(err); }
             console.log(req.session)
-            res.render('user_list', { title: 'Users', user_list: list_users, session: req.session })
+            res.render('user_list', { title: 'Users', user_list: list_users })
         })
 }
 
@@ -110,7 +110,7 @@ exports.user_detail = function(req, res, next) {
     ], function(err, results) {
         if (err) { return next(err); }
         if (results.verified) {
-            res.render('user_detail', { user: results.user, session: req.session })
+            res.render('user_detail', { user: results.user })
         } else {
             res.redirect('/login');
         }
@@ -118,7 +118,7 @@ exports.user_detail = function(req, res, next) {
 }
 
 exports.user_create_get = function(req, res) {
-    res.render('signup', { title: "Signup", session: req.session});
+    res.render('signup', { title: "Signup"});
 }
 
 exports.user_create_post = [
@@ -133,7 +133,7 @@ exports.user_create_post = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.render('signup', { title: "Signup", user: req.body, errors: errors.array(), session: req.session });
+            res.render('signup', { title: "Signup", user: req.body, errors: errors.array() });
             return;
         }
 
@@ -143,11 +143,11 @@ exports.user_create_post = [
             if (err) { return next(err); }
             if (existingUser) {
                 var error = {"msg": "Username already exists."};
-                return res.render('signup', {title: "Signup", errors: [error], session: req.session});
+                return res.render('signup', {title: "Signup", errors: [error]});
             }
             if (req.body.password !== req.body.passwordAgain) {
                 var error = {"msg": "Passwords do not match."};
-                return res.render('signup', {title: "Signup", errors: [error], username: req.body.username, session: req.session});
+                return res.render('signup', {title: "Signup", errors: [error], username: req.body.username});
             }
             create_new_user(req.body.username, req.body.password, function(err, user) {
                 if (err) { return next(err); }
@@ -196,7 +196,7 @@ exports.user_update_post = function(req, res, next) {
 };
 
 exports.login_get = function (req, res) {
-    res.render('login', { title: "Login", session: req.session });
+    res.render('login', { title: "Login" });
 }
 
 exports.user_login_post = [
@@ -209,7 +209,7 @@ exports.user_login_post = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.render('login', { title: "Login", user: req.body, errors: errors.array(), session: req.session});
+            res.render('login', { title: "Login", user: req.body, errors: errors.array()});
             return;
         }
         User.findOne({'username': req.body.username})
@@ -217,7 +217,7 @@ exports.user_login_post = [
             if (err) { return next(err); }
             if (user == null) {
                 var err = {"msg" : 'No user found with given username.'}
-                res.render('login', {title: 'Login', errors: [err], session: req.session});
+                res.render('login', {title: 'Login', errors: [err]});
                 return
             }
             var hash = user.password;
@@ -225,7 +225,7 @@ exports.user_login_post = [
                 if (err) { return next(err) }
                 if (!bcryptResult) {
                     var err = {"msg" : 'Incorrect password.'}
-                    res.render('login', {title: 'Login', username: req.body.username, errors: [err], session: req.session});
+                    res.render('login', {title: 'Login', username: req.body.username, errors: [err]});
                     return
                 }
                 req.session.user = req.body.username;
