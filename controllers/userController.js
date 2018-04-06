@@ -110,7 +110,7 @@ exports.user_detail = function(req, res, next) {
     ], function(err, results) {
         if (err) { return next(err); }
         if (results.verified) {
-            res.render('user_detail', { user: results.user })
+            res.render('user_detail', { title: `Mood Journal (${results.user.username})`, user: results.user })
         } else {
             res.redirect('/login');
         }
