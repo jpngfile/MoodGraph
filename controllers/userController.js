@@ -10,16 +10,20 @@ const { sanitizeBody } = require('express-validator/filter');
 
 const saltRounds = 10;
 
-function verifySession(username, password, callback) {
+function verifySession(username, session, callback) {
+    if (session == null ||
+        session.user == null ||
+        session.user !== username) {
+        return callback(null, false);
+    }
     User.findOne({'username': username})
         .exec(function(err, user) {
             if (err) { return callback(err)}
             if (user == null) {
                 return callback(null, false)
             }
-            bcrypt.compare(password, user.password, function(err, res) {
-                return callback(err, res)
-            })
+            var verified = user.password == session.password;
+            return callback(null, verified);
         })
 }
 
@@ -98,12 +102,7 @@ exports.user_detail = function(req, res, next) {
                 err.status = 404;
                 return callback(err);
             }
-            if (req.session == null ||
-                req.session.user == null ||
-                req.session.user !== user.username) {
-                return res.redirect('/login');
-            }
-            verifySession(user.username, req.session.password, function(err, verified){
+            verifySession(user.username, req.session, function(err, verified){
                 callback(err, {'verified': verified, 'user': user});   
             })
         }
@@ -228,8 +227,10 @@ exports.user_login_post = [
                     res.render('login', {title: 'Login', username: req.body.username, errors: [err]});
                     return
                 }
-                req.session.user = req.body.username;
-                req.session.password = req.body.password;
+                //req.session.user = req.body.username;
+                //req.session.password = req.body.password;
+                req.session.user = user.username;
+                req.session.password = user.password;
                 req.session.url = user.url;
 
                 console.log(req.session)
