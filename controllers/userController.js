@@ -176,38 +176,4 @@ exports.user_logout_get = function(req, res) {
     res.redirect("/")
 }
 
-// Adds years to all users from their latest year to the current year
-exports.update_user_years = function(){
-    var curDate = new Date()
-    var curYear = curDate.getFullYear();
-    User.find()
-    .populate({
-        path: 'years',
-        options: {sort: {'year': -1}},
-    })
-    .exec(function(err, users) {
-        if (err) { console.log(err); return; }
-        async.each(users, function(user, callback) {
-            var userLatestYear = user.years[0].year;
-            var years = _.range(userLatestYear + 1, curYear + 1);
-            async.each(years, function(year, yearCallback) {
-                utils.create_new_year(year, function(err, newYear) {
-                    if (err) { return yearCallback(err); }
-                    user.years.push(newYear);
-                    yearCallback();
-                })
-            }, function(err) {
-                if (err) { return callback(err); }
-                user.save(callback);
-            })
-
-        }, function(err) {
-            if (err) {
-                console.log (err);
-            } else {
-                console.log ("All users updated");
-            }
-        })
-    });
-}
 
