@@ -1,101 +1,13 @@
 var User = require('../models/user');
 var Year = require('../models/year');
 var Day = require('../models/day');
+var utils = require('./dbUtils');
 
 var async = require('async');
 var bcrypt = require('bcrypt');
 const _ = require('underscore');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-
-const saltRounds = 10;
-
-class MoodOption {
-    constructor(mood, color, imagePath) {
-        this.mood = mood;
-        this.color = color;
-        this.imagePath = imagePath;
-    }
-
-    get label() {
-        return this.mood.charAt(0).toUpperCase() + this.mood.slice(1);
-    }
-}
-
-var defaultMoodOptions = [
-    new MoodOption('happy', '#FFE548', '/images/happyIcon.png'),
-    new MoodOption('sad', '#8EB1C7', '/images/sadIcon.png'),
-    new MoodOption('neutral', '#E5F3BB', '/images/neutralIcon.png'),
-    new MoodOption('frustrated', '#DF2935', '/images/frustratedIcon.png'),
-    new MoodOption('excited', '#AFA2FF', '/images/excitedIcon.png'),
-    new MoodOption('productive', '#000000', '/images/productiveIcon.png'),
-];
-
-function verifySession(username, session, callback) {
-    if (session == null ||
-        session.user == null ||
-        session.user !== username) {
-        return callback(null, false);
-    }
-    User.findOne({'username': username})
-        .exec(function(err, user) {
-            if (err) { return callback(err)}
-            if (user == null) {
-                return callback(null, false)
-            }
-            var verified = user.password == session.password;
-            return callback(null, verified);
-        })
-}
-
-function create_new_year(year, finalCallback){
-    var days = [];
-    for (var i = 0; i < 365; i++){
-        var date = new Date(year, 0, 1);
-        date.setDate(date.getDate() + i)
-        var day = new Day({
-            mood: 'unassigned',
-            date: date,
-        });
-        days.push(day);
-    }
-    async.each(days, function(day, callback) {
-        day.save(function (err) {
-            if (err) { return callback(err) }
-            return callback()
-        })
-    }, function (err) {
-        if (err) { return finalCallback(err);}
-        var newYear = new Year({
-            days: days,
-            year: year,
-        })
-        newYear.save(finalCallback);
-    });
-}
-
-function create_new_user(username, password, callback) {
-    var currentYear = new Date().getFullYear();
-    async.parallel({
-        year: function(callback) {
-            create_new_year(currentYear, callback) 
-        },
-        hash: function(callback) {
-            bcrypt.hash(password, saltRounds, function(err, hash) {
-                if (err) { return callback(err); }
-                return callback(null, hash);
-            })
-        }
-    }, function (err, results) {
-        if (err) { return callback(err) }
-        var user = new User({
-            username: username,
-            password: results.hash,
-            years: [results.year]
-        });
-        user.save(callback) 
-    });
-}
 
 exports.user_list = function(req, res, next) {
     User.find()
@@ -123,14 +35,14 @@ exports.user_detail = function(req, res, next) {
                 err.status = 404;
                 return callback(err);
             }
-            verifySession(user.username, req.session, function(err, verified){
+            utils.verifySession(user.username, req.session, function(err, verified){
                 callback(err, {'verified': verified, 'user': user});   
             })
         }
     ], function(err, results) {
         if (err) { return next(err); }
         if (results.verified) {
-            res.render('user_detail', { title: `Mood Journal (${results.user.username})`, user: results.user, options: defaultMoodOptions })
+            res.render('user_detail', { title: `Mood Journal (${results.user.username})`, user: results.user, options: utils.defaultMoodOptions })
         } else {
             res.redirect('/login');
         }
@@ -169,10 +81,10 @@ exports.user_create_post = [
                 var error = {"msg": "Passwords do not match."};
                 return res.render('signup', {title: "Signup", errors: [error], username: req.body.username});
             }
-            create_new_user(req.body.username, req.body.password, function(err, user) {
+            utils.create_new_user(req.body.username, req.body.password, function(err, user) {
                 if (err) { return next(err); }
-                req.session.user = req.body.username;
-                req.session.password = req.body.password;
+                req.session.user = user.username;
+                req.session.password = user.password;
                 req.session.url = user.url;
                 res.redirect(user.url);
             });
@@ -279,7 +191,7 @@ exports.update_user_years = function(){
             var userLatestYear = user.years[0].year;
             var years = _.range(userLatestYear + 1, curYear + 1);
             async.each(years, function(year, yearCallback) {
-                create_new_year(year, function(err, newYear) {
+                utils.create_new_year(year, function(err, newYear) {
                     if (err) { return yearCallback(err); }
                     user.years.push(newYear);
                     yearCallback();

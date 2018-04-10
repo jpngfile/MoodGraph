@@ -2,7 +2,6 @@ console.log(user);
 var CELL_SIZE = 15;
 var buffer = 3;
 
-
 var colourMap = new Map([
     ['unassigned', '#E0E0E0'],
     ['happy', '#FFE548'],
@@ -14,11 +13,8 @@ var colourMap = new Map([
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-//var now = new Date();
-//console.log(moment(now).format('W'));
 var today = new Date();
 today.setHours(23,59,59,999);
-//today.setHours(0,0,0,0);
 for(var i = 0; i < user.years.length; i++){
     var year = user.years[i];
     var svg = d3.select('.heatmap')
@@ -57,10 +53,3 @@ for(var i = 0; i < user.years.length; i++){
         .style('fill', (d) => colourMap.get(d.mood))
         .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
 }
-//    .style('stroke-width', 3)
-//    .style('stroke', 'black')
-    
-//d3.select("body")
-//  .style('background-color', 'red')
-//  .append('p')
-//  .text("sample text")
