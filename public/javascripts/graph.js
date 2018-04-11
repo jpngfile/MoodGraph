@@ -13,12 +13,12 @@ var colourMap = new Map([
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-function rectOnClick(obj) {
+function rectOnClick(d, i) {
     console.log("Clickk");
-    console.log(this);
-    console.log(obj);
-    var objDate = d3.select(this).attr('fill', 'black');
-    console.log(objDate);
+    console.log(d);
+    d3.select(this)
+        .attr('stroke', 'black')
+        .attr('stroke-width', '1px')
 }
 
 var today = new Date();
@@ -62,15 +62,5 @@ for(var i = 0; i < user.years.length; i++){
         })
         .style('fill', (d) => colourMap.get(d.mood))
         .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
-        .on('click', function(d, i) {
-            console.log(d.date);
-        })
+        .on('click', rectOnClick)
 }
-
-
-//var rects = document.getElementsByClassName('day');
-//for (var i = 0; i < rects.length; i++){
-//    rects[i].onclick = function() {
-//        console.log("Clicked rect");
-//    };
-//}
