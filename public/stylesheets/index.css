@@ -1,0 +1,26 @@
+.landing-page {
+  height: 500px;
+  position: relative;
+  background: url("../images/landingImage.svg");
+  background-size: auto;
+}
+
+.landing-text {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-family: 'Nanum Gothic', sans-serif;
+  text-align: center;
+}
+
+.landing-title {
+  font-size: 7em;
+  font-family: 'Berkshire Swash', cursive;
+}
+
+.landing-subtitle {
+  font-weight: bold;
+}

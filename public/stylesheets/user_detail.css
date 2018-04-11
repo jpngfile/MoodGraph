@@ -1,0 +1,38 @@
+.heatmap {
+  margin: 20px 0px;
+}
+
+.mood-form {
+  display: inline-block;  
+  margin: 0px 5px 5px 0px;
+  border: black solid 1px;
+  border-radius: 5px;
+}
+
+.mood-form > input {
+  visibility: hidden;
+  position: absolute;
+}
+
+.mood-form > input + div {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.mood-form > input:checked + div {
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.mood-label-block > * {
+   vertical-align: middle;
+ }
+
+.mood-block {
+  margin: 0px 5px;
+}
+
+.mood-label {
+  display: inline-block;
+  margin: 5px 0px;
+}
