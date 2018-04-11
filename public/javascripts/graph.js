@@ -13,6 +13,14 @@ var colourMap = new Map([
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+function rectOnClick(obj) {
+    console.log("Clickk");
+    console.log(this);
+    console.log(obj);
+    var objDate = d3.select(this).attr('fill', 'black');
+    console.log(objDate);
+}
+
 var today = new Date();
 today.setHours(23,59,59,999);
 for(var i = 0; i < user.years.length; i++){
@@ -46,10 +54,23 @@ for(var i = 0; i < user.years.length; i++){
         .attr('height', CELL_SIZE)
         .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
         .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer) + 20)
+        .attr('class', 'day')
+        .attr('data-date', (d) => d.date)
         .text(function (d) {
             var date = new Date(d.date)
             return d3.timeFormat('%U')(date)    
         })
         .style('fill', (d) => colourMap.get(d.mood))
         .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
+        .on('click', function(d, i) {
+            console.log(d.date);
+        })
 }
+
+
+//var rects = document.getElementsByClassName('day');
+//for (var i = 0; i < rects.length; i++){
+//    rects[i].onclick = function() {
+//        console.log("Clicked rect");
+//    };
+//}
