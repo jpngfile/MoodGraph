@@ -1,8 +1,7 @@
 # MoodJournal
 Webapp to display mood from day to day
 
-Install npm and mongoDB
-run
+Install npm and mongoDB and run
 ```
 npm install
 sudo service mongod start
