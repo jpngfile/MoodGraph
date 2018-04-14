@@ -1,4 +1,5 @@
 console.log(user);
+console.log(curDate);
 var CELL_SIZE = 15;
 var buffer = 3;
 
@@ -16,9 +17,19 @@ var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oc
 function rectOnClick(d, i) {
     console.log("Clickk");
     console.log(d);
-    d3.select(this)
-        .attr('stroke', 'black')
-        .attr('stroke-width', '1px')
+    curDate = new Date(d.date);
+    updateRects();
+}
+
+function updateRects() {
+    var graphRects = d3.select('.heatmap').selectAll('rect')
+    graphRects.attr('stroke-width', (d) => equalDate(new Date(d.date), curDate) ? '1px' : '0px')
+}
+
+function equalDate(date1, date2) {
+    return date1.getFullYear() == date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
 }
 
 var today = new Date();
@@ -48,12 +59,15 @@ for(var i = 0; i < user.years.length; i++){
         .data(year.days)
     
     //rects.exit().remove()
+    console.log(year.days)
     
     rects.enter().append("rect")
         .attr('width', CELL_SIZE)
         .attr('height', CELL_SIZE)
         .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
         .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer) + 20)
+        .attr('stroke', 'black')
+        .attr('stroke-width', '0px')
         .attr('class', 'day')
         .attr('data-date', (d) => d.date)
         .text(function (d) {
@@ -63,4 +77,8 @@ for(var i = 0; i < user.years.length; i++){
         .style('fill', (d) => colourMap.get(d.mood))
         .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
         .on('click', rectOnClick)
+
+    rects.exit().remove()
+    svg.exit().remove()
 }
+
