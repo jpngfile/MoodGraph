@@ -13,6 +13,8 @@ var colourMap = new Map([
     ['productive', '#000000'],
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var today = new Date();
+today.setHours(23,59,59,999);
 
 function rectOnClick(d, i) {
     console.log(d);
@@ -21,13 +23,19 @@ function rectOnClick(d, i) {
        return;
     } 
     curDate = new Date(d.date);
-    updateRects();
+    updateDisplay();
 }
 
-function updateRects() {
+function updateDisplay() {
     var graphRects = d3.select('.heatmap').selectAll('rect')
     graphRects.attr('stroke-width', (d) => equalDate(new Date(d.date), curDate) ? '1px' : '0px')
     document.getElementById('form-date').value=curDate
+    var moodPrompt = document.getElementById('mood-prompt')
+    if (equalDate(curDate, today)){
+        moodPrompt.innerHTML = "How do you feel today"
+    } else {
+        moodPrompt.innerHTML = "How did you feel on " + moment(curDate).format('dddd, MMM Do YYYY')
+    }
 }
 
 function equalDate(date1, date2) {
@@ -36,8 +44,6 @@ function equalDate(date1, date2) {
         date1.getDate() === date2.getDate()
 }
 
-var today = new Date();
-today.setHours(23,59,59,999);
 for(var i = 0; i < user.years.length; i++){
     var year = user.years[i];
     var svg = d3.select('.heatmap')
@@ -61,8 +67,6 @@ for(var i = 0; i < user.years.length; i++){
         
     var rects = g.selectAll('rect')
         .data(year.days)
-    
-    //rects.exit().remove()
     
     rects.enter().append("rect")
         .attr('width', CELL_SIZE)
