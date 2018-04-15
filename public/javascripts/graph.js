@@ -16,6 +16,10 @@ var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oc
 
 function rectOnClick(d, i) {
     console.log(d);
+    var rectDate = new Date(d.date);
+    if (rectDate > today){
+       return;
+    } 
     curDate = new Date(d.date);
     updateRects();
 }
