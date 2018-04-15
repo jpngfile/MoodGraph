@@ -15,7 +15,6 @@ var colourMap = new Map([
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function rectOnClick(d, i) {
-    console.log("Clickk");
     console.log(d);
     curDate = new Date(d.date);
     updateRects();
@@ -24,6 +23,7 @@ function rectOnClick(d, i) {
 function updateRects() {
     var graphRects = d3.select('.heatmap').selectAll('rect')
     graphRects.attr('stroke-width', (d) => equalDate(new Date(d.date), curDate) ? '1px' : '0px')
+    document.getElementById('form-date').value=curDate
 }
 
 function equalDate(date1, date2) {
@@ -59,7 +59,6 @@ for(var i = 0; i < user.years.length; i++){
         .data(year.days)
     
     //rects.exit().remove()
-    console.log(year.days)
     
     rects.enter().append("rect")
         .attr('width', CELL_SIZE)

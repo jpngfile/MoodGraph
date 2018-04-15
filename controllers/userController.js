@@ -93,7 +93,7 @@ exports.user_create_post = [
 ];
 
 exports.user_update_post = function(req, res, next) {
-    var curDate = new Date()
+    var curDate = new Date(req.body.date)
     User.findById(req.params.id)
     .populate({
         path: 'years',

@@ -10,6 +10,7 @@ block content
   h1 How do you feel today?
   form(method='POST' action='')
     div
+      input(id="form-date" name="date" type="hidden" value="#{new Date()}")
       for moodOption in options
         label.mood-form(for= "#{moodOption.mood}")
           input(id= "#{moodOption.mood}", type='radio', name="mood", value="#{moodOption.mood}")
