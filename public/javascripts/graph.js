@@ -1,7 +1,8 @@
 console.log(user);
 console.log(curDate);
 var CELL_SIZE = 15;
-var buffer = 3;
+var CELL_BUFFER = 3;
+var YEAR_TEXT_MARGIN = 30;
 
 var colourMap = new Map([
     ['unassigned', '#E0E0E0'],
@@ -46,24 +47,28 @@ function equalDate(date1, date2) {
 
 for(var i = 0; i < user.years.length; i++){
     var year = user.years[i];
+    // The 11 actually means Dec, not November.
+    var lastDate = new Date(year.year, 11, 31);
+    var numWeeks = Number(d3.timeFormat("%U")(lastDate)) + 1;
+    var graphWidth = ((CELL_SIZE + CELL_BUFFER) * numWeeks) + YEAR_TEXT_MARGIN;
     var svg = d3.select('.heatmap')
         .append("svg")
-        .attr('width', 1000)
+        .attr('width', graphWidth)
         .append("g")
 
     svg.append("text")
-      .attr("transform", "translate(20," + (30 + CELL_SIZE * 3.5) + ")rotate(-90)")
+      .attr("transform", "translate(20," + (YEAR_TEXT_MARGIN + CELL_SIZE * 3.5) + ")rotate(-90)")
       .attr("text-anchor", "middle")
       .text(year.year);
 
     svg.selectAll('g')
       .data(d3.range(0, 12))
       .enter().append('text')
-      .attr("transform", (d) => "translate(" + (30 + ((CELL_SIZE + buffer) * (moment(new Date(year.year, d, 1, 0, 0, 0)).format('W') - 1))) + ", 10)")
+      .attr("transform", (d) => "translate(" + (YEAR_TEXT_MARGIN + ((CELL_SIZE + CELL_BUFFER) * (moment(new Date(year.year, d, 1, 0, 0, 0)).format('W') - 1))) + ", 10)")
       .text((d) => months[d])
         
     var g = svg.append('g')
-      .attr("transform", "translate(30, 0)")
+      .attr("transform", "translate(" + YEAR_TEXT_MARGIN + ", 0)")
         
     var rects = g.selectAll('rect')
         .data(year.days)
@@ -71,16 +76,11 @@ for(var i = 0; i < user.years.length; i++){
     rects.enter().append("rect")
         .attr('width', CELL_SIZE)
         .attr('height', CELL_SIZE)
-        .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + buffer))
-        .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + buffer) + 20)
+        .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + CELL_BUFFER))
+        .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + CELL_BUFFER) + 20)
         .attr('stroke', 'black')
         .attr('stroke-width', '0px')
         .attr('class', 'day')
-        .attr('data-date', (d) => d.date)
-        .text(function (d) {
-            var date = new Date(d.date)
-            return d3.timeFormat('%U')(date)    
-        })
         .style('fill', (d) => colourMap.get(d.mood))
         .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
         .on('click', rectOnClick)
