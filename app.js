@@ -12,8 +12,7 @@ var index = require('./routes/index');
 var app = express();
 
 // Database setup
-//var mongoDB = process.env.MONGODB_URI || 'mongodb://admin:123@ds239968.mlab.com:39968/moodgraph';
-var mongoDB = 'mongodb://localhost/test'
+var mongoDB = process.env.MONGODB_URI || 'mongodb://localhost/test'
 mongoose.connect(mongoDB, {});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
