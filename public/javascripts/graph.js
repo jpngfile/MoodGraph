@@ -24,6 +24,8 @@ function rectOnClick(d, i) {
        return;
     } 
     curDate = new Date(d.date);
+    console.log(d.date);
+    console.log(curDate)
     updateDisplay();
 }
 
