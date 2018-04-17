@@ -81,6 +81,7 @@ for(var i = 0; i < user.years.length; i++){
         .attr('stroke', 'black')
         .attr('stroke-width', '0px')
         .attr('class', 'day')
+        .attr('data-date', (d) => d.date)
         .style('fill', (d) => colourMap.get(d.mood))
         .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
         .on('click', rectOnClick)
