@@ -35,9 +35,9 @@ function updateDisplay() {
     document.getElementById('form-date').value=curDate
     var moodPrompt = document.getElementById('mood-prompt')
     if (equalDate(curDate, today)){
-        moodPrompt.innerHTML = "How do you feel today"
+        moodPrompt.innerHTML = "How do you feel today?"
     } else {
-        moodPrompt.innerHTML = "How did you feel on " + moment(curDate).format('dddd, MMM Do YYYY')
+        moodPrompt.innerHTML = "How did you feel on " + moment(curDate).format('dddd, MMM Do YYYY') + "?"
     }
 }
 
