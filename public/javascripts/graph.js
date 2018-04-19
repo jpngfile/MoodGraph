@@ -3,6 +3,7 @@ console.log(curDate);
 var CELL_SIZE = 15;
 var CELL_BUFFER = 3;
 var YEAR_TEXT_MARGIN = 30;
+var MONTH_TEXT_MARGIN = 20;
 
 var colourMap = new Map([
     ['unassigned', '#E0E0E0'],
@@ -17,9 +18,15 @@ var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oc
 var today = new Date();
 today.setHours(23,59,59,999);
 
+function getUTCDate(date){
+    console.log(date.getFullYear() + " " + date.getMonth() + " " + date.getDate())
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
+}
+
 function rectOnClick(d, i) {
     console.log(d);
     var rectDate = new Date(d.date);
+    console.log(getUTCDate(rectDate).toUTCString())
     if (rectDate > today){
        return;
     } 
@@ -59,7 +66,7 @@ for(var i = 0; i < user.years.length; i++){
         .append("g")
 
     svg.append("text")
-      .attr("transform", "translate(20," + (YEAR_TEXT_MARGIN + CELL_SIZE * 3.5) + ")rotate(-90)")
+      .attr("transform", "translate(" + MONTH_TEXT_MARGIN + ", " + (YEAR_TEXT_MARGIN + CELL_SIZE * 3.5) + ")rotate(-90)")
       .attr("text-anchor", "middle")
       .text(year.year);
 
@@ -79,7 +86,7 @@ for(var i = 0; i < user.years.length; i++){
         .attr('width', CELL_SIZE)
         .attr('height', CELL_SIZE)
         .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + CELL_BUFFER))
-        .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + CELL_BUFFER) + 20)
+        .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + CELL_BUFFER) + MONTH_TEXT_MARGIN)
         .attr('stroke', 'black')
         .attr('stroke-width', '0px')
         .attr('class', 'day')
