@@ -32,7 +32,7 @@ function rectOnClick(d, i) {
     } 
     curDate = new Date(d.date);
     console.log(d.date);
-    console.log(curDate)
+    console.log(curDate.toUTCString())
     updateDisplay();
 }
 
@@ -85,7 +85,7 @@ for(var i = 0; i < user.years.length; i++){
     rects.enter().append("rect")
         .attr('width', CELL_SIZE)
         .attr('height', CELL_SIZE)
-        .attr('x', (d) => d3.timeFormat('%U')(new Date(d.date)) * (CELL_SIZE + CELL_BUFFER))
+        .attr('x', (d) => d3.utcFormat('%U')(new Date(d.date)) * (CELL_SIZE + CELL_BUFFER))
         .attr('y', (d) => new Date(d.date).getDay() * (CELL_SIZE + CELL_BUFFER) + MONTH_TEXT_MARGIN)
         .attr('stroke', 'black')
         .attr('stroke-width', '0px')
