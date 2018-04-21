@@ -1,4 +1,5 @@
 console.log(user);
+curDate.setHours(0,0,0,0);
 console.log(curDate);
 var CELL_SIZE = 15;
 var CELL_BUFFER = 3;
@@ -26,7 +27,6 @@ function getUTCDate(date){
 function rectOnClick(d, i) {
     console.log(d);
     var rectDate = new Date(d.date);
-    console.log(getUTCDate(rectDate).toUTCString())
     if (rectDate > today){
        return;
     } 
