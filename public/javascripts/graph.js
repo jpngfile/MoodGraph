@@ -18,6 +18,7 @@ var colourMap = new Map([
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var today = new Date();
 today.setHours(23,59,59,999);
+console.log(today);
 
 function getUTCDate(date){
     console.log(date.getFullYear() + " " + date.getMonth() + " " + date.getDate())
@@ -92,7 +93,7 @@ for(var i = 0; i < user.years.length; i++){
         .attr('class', 'day')
         .attr('data-date', (d) => d.date)
         .style('fill', (d) => colourMap.get(d.mood))
-        .style('opacity', (d) => new Date(d.date) > today ? 0.5 : 1)
+        .style('opacity', (d) => new Date(d.date).getTime() > today.getTime() ? 0.5 : 1)
         .on('click', rectOnClick)
 
     rects.exit().remove()
