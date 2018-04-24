@@ -10,7 +10,7 @@ block content
   h1(id="mood-prompt") How do you feel today?
   form(method='POST' action='')
     div
-      input(id="form-date" name="date" type="hidden" value="#{new Date()}")
+      input(id="form-date" name="date" type="hidden")
       for moodOption in options
         label.mood-form(for= "#{moodOption.mood}")
           input(id= "#{moodOption.mood}", type='radio', name="mood", value="#{moodOption.mood}")
@@ -21,3 +21,6 @@ block content
                 rect(width=15, height=15, style="fill: #{moodOption.color}")
               p.mood-label #{moodOption.label}
     button.pure-button.pure-button-primary(type='submit') Submit
+
+    script.
+      document.getElementById('form-date').value=curDate

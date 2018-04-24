@@ -94,6 +94,9 @@ exports.user_create_post = [
 
 exports.user_update_post = function(req, res, next) {
     var curDate = new Date(req.body.date)
+    console.log(req.body.date)
+    console.log(curDate.toUTCString())
+    console.log(curDate.getFullYear() + " " + curDate.getMonth() + " " + curDate.getDate())
     User.findById(req.params.id)
     .populate({
         path: 'years',
@@ -107,11 +110,11 @@ exports.user_update_post = function(req, res, next) {
             return next(err);
         }
         var year = user.years.find(function(el) {
-             return el.year === curDate.getFullYear()
+             return el.year === curDate.getUTCFullYear()
         })
         var curDay = year.days.find(function (el) {
-            return el.date.getMonth() === curDate.getMonth() &&
-                el.date.getDate() === curDate.getDate();
+            return el.date.getUTCMonth() === curDate.getUTCMonth() &&
+                el.date.getUTCDate() === curDate.getUTCDate();
         })
         var newDay = new Day({
             mood: req.body.mood,

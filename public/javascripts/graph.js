@@ -23,11 +23,10 @@ function getUTCDate(date){
 var today = new Date();
 today = getUTCDate(today);
 today.setUTCHours(23);
-console.log(today);
+console.log(today.toUTCString());
 
 curDate = getUTCDate(curDate)
-curDate.setUTCHours(0);
-console.log(curDate);
+console.log(curDate.toUTCString());
 
 function rectOnClick(d, i) {
     console.log(d);
