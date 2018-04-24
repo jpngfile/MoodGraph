@@ -16,14 +16,16 @@ var colourMap = new Map([
     ['productive', '#000000'],
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-var today = new Date();
-today.setHours(23,59,59,999);
-console.log(today);
 
 function getUTCDate(date){
     console.log(date.getFullYear() + " " + date.getMonth() + " " + date.getDate())
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
 }
+
+var today = new Date();
+today = getUTCDate(today);
+today.setUTCHours(23);
+console.log(today);
 
 function rectOnClick(d, i) {
     console.log(d);
@@ -45,14 +47,14 @@ function updateDisplay() {
     if (equalDate(curDate, today)){
         moodPrompt.innerHTML = "How do you feel today?"
     } else {
-        moodPrompt.innerHTML = "How did you feel on " + moment(curDate).format('dddd, MMM Do YYYY') + "?"
+        moodPrompt.innerHTML = "How did you feel on " + moment.utc(curDate).format('dddd, MMM Do YYYY') + "?"
     }
 }
 
 function equalDate(date1, date2) {
-    return date1.getFullYear() == date2.getFullYear() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getDate() === date2.getDate()
+    return date1.getUTCFullYear() == date2.getUTCFullYear() &&
+        date1.getUTCMonth() === date2.getUTCMonth() &&
+        date1.getUTCDate() === date2.getUTCDate()
 }
 
 for(var i = 0; i < user.years.length; i++){
