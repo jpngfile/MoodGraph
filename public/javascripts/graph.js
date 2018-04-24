@@ -1,6 +1,4 @@
 console.log(user);
-curDate.setHours(0,0,0,0);
-console.log(curDate);
 var CELL_SIZE = 15;
 var CELL_BUFFER = 3;
 var YEAR_TEXT_MARGIN = 30;
@@ -26,6 +24,10 @@ var today = new Date();
 today = getUTCDate(today);
 today.setUTCHours(23);
 console.log(today);
+
+curDate = getUTCDate(curDate)
+curDate.setUTCHours(0);
+console.log(curDate);
 
 function rectOnClick(d, i) {
     console.log(d);
