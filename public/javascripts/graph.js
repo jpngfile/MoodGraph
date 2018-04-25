@@ -25,9 +25,6 @@ today = getUTCDate(today);
 today.setUTCHours(23);
 console.log(today.toUTCString());
 
-curDate = getUTCDate(curDate)
-console.log(curDate.toUTCString());
-
 function rectOnClick(d, i) {
     console.log(d);
     var rectDate = new Date(d.date);
@@ -35,8 +32,6 @@ function rectOnClick(d, i) {
        return;
     } 
     curDate = new Date(d.date);
-    console.log(d.date);
-    console.log(curDate.toUTCString())
     updateDisplay();
 }
 
