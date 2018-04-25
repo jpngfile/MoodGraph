@@ -1,6 +1,8 @@
 # MoodJournal
 
 ![front page](https://raw.githubusercontent.com/jpngfile/MoodJournal/master/public/images/moodJournalFrontPage.png)
+
+Live version at https://moodjournalapp.herokuapp.com/ \
 Webapp to display mood from day to day
 
 Install npm and mongoDB and run
