@@ -120,6 +120,7 @@ exports.user_update_post = function(req, res, next) {
         var newDay = new Day({
             mood: req.body.mood,
             date: curDay.date,
+            note: req.body.note,
             _id: curDay._id
         })
         Day.findByIdAndUpdate(curDay._id, newDay, {}, function(err, day) {
