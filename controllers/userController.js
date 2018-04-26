@@ -94,9 +94,10 @@ exports.user_create_post = [
 
 exports.user_update_post = function(req, res, next) {
     var curDate = new Date(req.body.date)
-    console.log(req.body.date)
-    console.log(curDate.toUTCString())
-    console.log(curDate.getFullYear() + " " + curDate.getMonth() + " " + curDate.getDate())
+    //console.log(req.body.date)
+    //console.log(curDate.toUTCString())
+    //console.log(curDate.getFullYear() + " " + curDate.getMonth() + " " + curDate.getDate())
+    console.log("Note: " + req.body.note);
     User.findById(req.params.id)
     .populate({
         path: 'years',

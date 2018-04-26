@@ -36,3 +36,8 @@
   display: inline-block;
   margin: 5px 0px;
 }
+
+.note-field {
+  display: block;
+  margin-bottom: 5px;
+}
