@@ -26,5 +26,6 @@ block content
 
   script.
     curDate = getUTCDate(curDate)
-    console.log(curDate.toUTCString());
+    console.log(curDate.toUTCString())
+    updateNotes(curDate)
     document.getElementById('form-date').value=curDate

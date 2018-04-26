@@ -16,7 +16,7 @@ var colourMap = new Map([
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function getUTCDate(date){
-    console.log(date.getFullYear() + " " + date.getMonth() + " " + date.getDate())
+    //console.log(date.getFullYear() + " " + date.getMonth() + " " + date.getDate())
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
 }
 
@@ -25,17 +25,30 @@ today = getUTCDate(today);
 today.setUTCHours(23);
 console.log(today.toUTCString());
 
+function getDay(user, date) {
+    var yearArr = _.find(user.years, function(year){ return year.year === date.getUTCFullYear()});
+    var days = yearArr.days;
+    var day = _.find(days, function(dayObj){ return equalDate(new Date(dayObj.date), date)});
+    return day;
+}
+
 function rectOnClick(d, i) {
-    console.log(d);
+    //console.log(d);
     var rectDate = new Date(d.date);
     if (rectDate > today){
        return;
     } 
     curDate = new Date(d.date);
+    updateNotes(curDate)
     updateDisplay();
 }
 
-function updateDisplay() {
+function updateNotes(date) {
+    var curDay = getDay(user, date);
+    document.getElementById('note-field').value = curDay.note ? curDay.note : ''
+}
+
+function updateDisplay(note) {
     var graphRects = d3.select('.heatmap').selectAll('rect')
     graphRects.attr('stroke-width', (d) => equalDate(new Date(d.date), curDate) ? '1px' : '0px')
     document.getElementById('form-date').value=curDate
