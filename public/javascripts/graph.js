@@ -15,11 +15,6 @@ var colourMap = new Map([
 ]);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-function getUTCDate(date){
-    //console.log(date.getFullYear() + " " + date.getMonth() + " " + date.getDate())
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
-}
-
 var today = new Date();
 today = getUTCDate(today);
 today.setUTCHours(23);
@@ -60,11 +55,6 @@ function updateDisplay(note) {
     }
 }
 
-function equalDate(date1, date2) {
-    return date1.getUTCFullYear() == date2.getUTCFullYear() &&
-        date1.getUTCMonth() === date2.getUTCMonth() &&
-        date1.getUTCDate() === date2.getUTCDate()
-}
 
 for(var i = 0; i < user.years.length; i++){
     var year = user.years[i];
