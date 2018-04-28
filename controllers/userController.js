@@ -92,10 +92,11 @@ exports.user_create_post = [
     }
 ];
 
+// Should verify user before posting
 exports.user_update_post = function(req, res, next) {
     var curDate = new Date(req.body.date)
-    //console.log(req.body.date)
-    //console.log(curDate.toUTCString())
+    console.log(req.body.date)
+    console.log(curDate.toUTCString())
     //console.log(curDate.getFullYear() + " " + curDate.getMonth() + " " + curDate.getDate())
     console.log("Note: " + req.body.note);
     User.findById(req.params.id)

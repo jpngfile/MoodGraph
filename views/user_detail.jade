@@ -8,7 +8,7 @@ block content
   hr
 
   h1(id="mood-prompt") How do you feel today?
-  form(method='POST' action='')
+  form#mood-form(method='POST' action='')
     div
       input(id="form-date" name="date" type="hidden")
       for moodOption in options
@@ -21,7 +21,8 @@ block content
                 rect(width=15, height=15, style="fill: #{moodOption.color}")
               p.mood-label #{moodOption.label}
        label.note-field(for="note-field") Notes: 
-        input(id="note-field" name="note" type="text")
+         //input(id="note-field" name="note" type="text")
+       textarea(id="note-field" form="mood-form" name="note")
     button.pure-button.pure-button-primary(type='submit') Submit
 
   script.
