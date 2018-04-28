@@ -21,8 +21,7 @@ block content
                 rect(width=15, height=15, style="fill: #{moodOption.color}")
               p.mood-label #{moodOption.label}
        label.note-field(for="note-field") Notes: 
-         //input(id="note-field" name="note" type="text")
-       textarea(id="note-field" form="mood-form" name="note")
+       textarea(id="note-field" form="mood-form" name="note" rows="8" cols="50")
     button.pure-button.pure-button-primary(type='submit') Submit
 
   script.
