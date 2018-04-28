@@ -20,8 +20,8 @@ block content
               svg.mood-block(width=15, height=15)
                 rect(width=15, height=15, style="fill: #{moodOption.color}")
               p.mood-label #{moodOption.label}
-       label.note-field(for="note-field") Notes: 
-       textarea(id="note-field" form="mood-form" name="note" rows="8" cols="50")
+      p.note-field Notes:
+      textarea(id="note-field" form="mood-form" name="note" rows="8" cols="50")
     button.pure-button.pure-button-primary(type='submit') Submit
 
   script.
