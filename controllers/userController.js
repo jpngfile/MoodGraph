@@ -93,6 +93,7 @@ exports.user_create_post = [
 ];
 
 // Should verify user before posting
+// Good opportunity to use decorators. May justify using promises as well
 exports.user_update_post = function(req, res, next) {
     var curDate = new Date(req.body.date)
     console.log(req.body.date)
@@ -114,6 +115,10 @@ exports.user_update_post = function(req, res, next) {
         var year = user.years.find(function(el) {
              return el.year === curDate.getUTCFullYear()
         })
+        if (year == null) {
+            var err = new Error('No Year found');
+            return next(err);
+        }
         var curDay = year.days.find(function (el) {
             return el.date.getUTCMonth() === curDate.getUTCMonth() &&
                 el.date.getUTCDate() === curDate.getUTCDate();
