@@ -29,21 +29,43 @@ exports.defaultMoodOptions = [
     new MoodOption('productive', '#000000', '/images/productiveIcon.png'),
 ];
 
-exports.verifySession = function(username, session, callback) {
+exports.verifySession = function(req, session, callback) {
     if (session == null ||
-        session.user == null ||
-        session.user !== username) {
-        return callback(null, false);
+        session.user == null) {
+        return callback(null, {'verified': false});
     }
-    User.findOne({'username': username})
-        .exec(function(err, user) {
-            if (err) { return callback(err)}
+    async.waterfall([
+        function(callback) {
+            User.findById(req.params.id)
+                .populate({
+                    path: 'years',
+                    populate: { path: 'days' },
+                })
+                .exec(callback)
+        },
+        function(user, callback) {
             if (user == null) {
-                return callback(null, false)
+                var err = new Error('User not found');
+                err.status = 404;
+                return callback(err);
+            } else if (user.username !== session.user) {
+                return callback(null, {'verified': false})
             }
             var verified = user.password == session.password;
-            return callback(null, verified);
-        })
+            user.password = undefined;
+            console.log("password: " + user.password)
+            callback(null, {'verified': verified, 'user': user});   
+        }
+    ], callback)
+    //User.findOne({'username': username})
+    //    .exec(function(err, user) {
+    //        if (err) { return callback(err)}
+    //        if (user == null) {
+    //            return callback(null, false)
+    //        }
+    //        var verified = user.password == session.password;
+    //        return callback(null, verified);
+    //    })
 }
 
 function create_new_year(year, finalCallback){
