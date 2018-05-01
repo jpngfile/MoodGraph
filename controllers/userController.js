@@ -82,18 +82,12 @@ exports.user_update_post = function(req, res, next) {
     console.log(curDate.toUTCString())
     //console.log(curDate.getFullYear() + " " + curDate.getMonth() + " " + curDate.getDate())
     console.log("Note: " + req.body.note);
-    User.findById(req.params.id)
-    .populate({
-        path: 'years',
-        populate: { path: 'days' },
-    })
-    .exec(function(err, user) {
+    utils.verifySession(req, req.session, function(err, results) {
         if (err) { return next(err); }
-        if (user == null) {
-            var err = new Error('User not found');
-            err.status = 404;
-            return next(err);
+        if (!results.verified) {
+            res.redirect('/login');
         }
+        var user = results.user;
         var year = user.years.find(function(el) {
              return el.year === curDate.getUTCFullYear()
         })
