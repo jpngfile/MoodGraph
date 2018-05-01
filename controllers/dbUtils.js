@@ -57,15 +57,6 @@ exports.verifySession = function(req, session, callback) {
             callback(null, {'verified': verified, 'user': user});   
         }
     ], callback)
-    //User.findOne({'username': username})
-    //    .exec(function(err, user) {
-    //        if (err) { return callback(err)}
-    //        if (user == null) {
-    //            return callback(null, false)
-    //        }
-    //        var verified = user.password == session.password;
-    //        return callback(null, verified);
-    //    })
 }
 
 function create_new_year(year, finalCallback){

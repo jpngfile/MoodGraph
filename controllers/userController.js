@@ -20,26 +20,6 @@ exports.user_list = function(req, res, next) {
 }
 
 exports.user_detail = function(req, res, next) {
-    //async.waterfall([
-    //    function(callback) {
-    //        User.findById(req.params.id, {"password": 0})
-    //            .populate({
-    //                path: 'years',
-    //                populate: { path: 'days' },
-    //            })
-    //            .exec(callback)
-    //    },
-    //    function(user, callback) {
-    //        if (user == null) {
-    //            var err = new Error('User not found');
-    //            err.status = 404;
-    //            return callback(err);
-    //        }
-    //        utils.verifySession(user.username, req.session, function(err, verified){
-    //            callback(err, {'verified': verified, 'user': user});   
-    //        })
-    //    }
-    //], function(err, results) {
     utils.verifySession(req, req.session, function(err, results) {
         if (err) { return next(err); }
         console.log(results)
