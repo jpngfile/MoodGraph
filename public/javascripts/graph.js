@@ -55,49 +55,50 @@ function updateDisplay(note) {
     }
 }
 
-
-for(var i = 0; i < user.years.length; i++){
-    var year = user.years[i];
-    // The 11 actually means Dec, not November.
-    var lastDate = new Date(year.year, 11, 31);
-    var numWeeks = Number(d3.timeFormat("%U")(lastDate)) + 1;
-    var graphWidth = ((CELL_SIZE + CELL_BUFFER) * numWeeks) + YEAR_TEXT_MARGIN;
-    var svg = d3.select('.heatmap')
-        .append("svg")
-        .attr('width', graphWidth)
-        .append("g")
-
-    svg.append("text")
-      .attr("transform", "translate(" + MONTH_TEXT_MARGIN + ", " + (YEAR_TEXT_MARGIN + CELL_SIZE * 3.5) + ")rotate(-90)")
-      .attr("text-anchor", "middle")
-      .text(year.year);
-
-    svg.selectAll('g')
-      .data(d3.range(0, 12))
-      .enter().append('text')
-      .attr("transform", (d) => "translate(" + (YEAR_TEXT_MARGIN + ((CELL_SIZE + CELL_BUFFER) * (moment(new Date(year.year, d, 1, 0, 0, 0)).format('W') - 1))) + ", 10)")
-      .text((d) => months[d])
-        
-    var g = svg.append('g')
-      .attr("transform", "translate(" + YEAR_TEXT_MARGIN + ", 0)")
-        
-    var rects = g.selectAll('rect')
-        .data(year.days)
+function createGraph(){
+    for(var i = 0; i < user.years.length; i++){
+        var year = user.years[i];
+        // The 11 actually means Dec, not November.
+        var lastDate = new Date(year.year, 11, 31);
+        var numWeeks = Number(d3.timeFormat("%U")(lastDate)) + 1;
+        var graphWidth = ((CELL_SIZE + CELL_BUFFER) * numWeeks) + YEAR_TEXT_MARGIN;
+        var svg = d3.select('.heatmap')
+            .append("svg")
+            .attr('width', graphWidth)
+            .append("g")
     
-    rects.enter().append("rect")
-        .attr('width', CELL_SIZE)
-        .attr('height', CELL_SIZE)
-        .attr('x', (d) => d3.utcFormat('%U')(new Date(d.date)) * (CELL_SIZE + CELL_BUFFER))
-        .attr('y', (d) => new Date(d.date).getUTCDay() * (CELL_SIZE + CELL_BUFFER) + MONTH_TEXT_MARGIN)
-        .attr('stroke', 'black')
-        .attr('stroke-width', '0px')
-        .attr('class', 'day')
-        .attr('data-date', (d) => d.date)
-        .style('fill', (d) => colourMap.get(d.mood))
-        .style('opacity', (d) => new Date(d.date).getTime() > today.getTime() ? 0.5 : 1)
-        .on('click', rectOnClick)
-
-    rects.exit().remove()
-    svg.exit().remove()
+        svg.append("text")
+          .attr("transform", "translate(" + MONTH_TEXT_MARGIN + ", " + (YEAR_TEXT_MARGIN + CELL_SIZE * 3.5) + ")rotate(-90)")
+          .attr("text-anchor", "middle")
+          .text(year.year);
+    
+        svg.selectAll('g')
+          .data(d3.range(0, 12))
+          .enter().append('text')
+          .attr("transform", (d) => "translate(" + (YEAR_TEXT_MARGIN + ((CELL_SIZE + CELL_BUFFER) * (moment(new Date(year.year, d, 1, 0, 0, 0)).format('W') - 1))) + ", 10)")
+          .text((d) => months[d])
+            
+        var g = svg.append('g')
+          .attr("transform", "translate(" + YEAR_TEXT_MARGIN + ", 0)")
+            
+        var rects = g.selectAll('rect')
+            .data(year.days)
+        
+        rects.enter().append("rect")
+            .attr('width', CELL_SIZE)
+            .attr('height', CELL_SIZE)
+            .attr('x', (d) => d3.utcFormat('%U')(new Date(d.date)) * (CELL_SIZE + CELL_BUFFER))
+            .attr('y', (d) => new Date(d.date).getUTCDay() * (CELL_SIZE + CELL_BUFFER) + MONTH_TEXT_MARGIN)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '0px')
+            .attr('class', 'day')
+            .attr('data-date', (d) => d.date)
+            .style('fill', (d) => colourMap.get(d.mood))
+            .style('opacity', (d) => new Date(d.date).getTime() > today.getTime() ? 0.5 : 1)
+            .on('click', rectOnClick)
+    
+        rects.exit().remove()
+        svg.exit().remove()
+    }
 }
 
