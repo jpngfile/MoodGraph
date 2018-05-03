@@ -5,14 +5,13 @@ var YEAR_TEXT_MARGIN = 30;
 var MONTH_TEXT_MARGIN = 20;
 
 var colourMap = new Map([
-    ['unassigned', '#E0E0E0'],
-    ['happy', '#FFE548'],
-    ['sad', '#8EB1C7'],
-    ['neutral', '#E5F3BB'],
-    ['excited', '#AFA2FF'],
-    ['frustrated', '#DF2935'],
-    ['productive', '#000000'],
+    ['unassigned', '#E0E0E0']
 ]);
+for(var i = 0; i < options.length; i++){
+    var option = options[i];
+    console.log(option);
+    colourMap.set(option.mood, option.color)
+}
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 var today = new Date();
@@ -53,6 +52,10 @@ function updateDisplay(note) {
     } else {
         moodPrompt.innerHTML = "How did you feel on " + moment.utc(curDate).format('dddd, MMM Do YYYY') + "?"
     }
+}
+
+function getGraphRects(){
+    return d3.select('.heatmap').selectAll('rect')
 }
 
 function createGraph(){
