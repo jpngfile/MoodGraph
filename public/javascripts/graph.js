@@ -96,8 +96,6 @@ function createGraph(){
             .attr('stroke-width', '0px')
             .attr('class', 'day')
             .attr('data-date', (d) => d.date)
-            .style('fill', (d) => colourMap.get(d.mood))
-            .style('opacity', (d) => new Date(d.date).getTime() > today.getTime() ? 0.5 : 1)
             .on('click', rectOnClick)
     
         rects.exit().remove()

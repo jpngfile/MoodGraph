@@ -25,8 +25,12 @@ block content
     button.pure-button.pure-button-primary(type='submit') Submit
 
   script.
+
     console.log(!{JSON.stringify(options)})
     createGraph()
+    var graphRects = getGraphRects();
+    graphRects.style('fill', (d) => colourMap.get(d.mood))
+    graphRects.style('opacity', (d) => new Date(d.date).getTime() > today.getTime() ? 0.5 : 1)
     curDate = getUTCDate(curDate)
     console.log(curDate.toUTCString())
     updateNotes(curDate)
