@@ -14,10 +14,6 @@ for(var i = 0; i < options.length; i++){
 }
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-var today = new Date();
-today = getUTCDate(today);
-today.setUTCHours(23);
-console.log(today.toUTCString());
 
 function getDay(user, date) {
     var yearArr = _.find(user.years, function(year){ return year.year === date.getUTCFullYear()});
@@ -74,4 +70,5 @@ function createGraph(){
         svg.exit().remove()
     }
 }
+createGraph()
 
