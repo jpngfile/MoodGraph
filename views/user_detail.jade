@@ -1,5 +1,15 @@
 extends layout
 
+mixin moodButton(moodOption)
+  label.mood-form(for= "#{moodOption.mood}")
+    input(id= "#{moodOption.mood}", type='radio', name="mood", value="#{moodOption.mood}")
+    div
+      img(src="#{moodOption.imagePath}")
+      div.mood-label-block
+        svg.mood-block(width=15, height=15)
+          rect(width=15, height=15, style="fill: #{moodOption.color}")
+        p.mood-label #{moodOption.label}
+
 block content
 
   include partials/mood_graph
@@ -11,14 +21,7 @@ block content
     div
       input(id="form-date" name="date" type="hidden")
       for moodOption in options
-        label.mood-form(for= "#{moodOption.mood}")
-          input(id= "#{moodOption.mood}", type='radio', name="mood", value="#{moodOption.mood}")
-          div
-            img(src="#{moodOption.imagePath}")
-            div.mood-label-block
-              svg.mood-block(width=15, height=15)
-                rect(width=15, height=15, style="fill: #{moodOption.color}")
-              p.mood-label #{moodOption.label}
+        +moodButton(moodOption)
       p.note-field Notes:
       textarea(id="note-field" form="mood-form" name="note" rows="8" cols="50")
     button.pure-button.pure-button-primary(type='submit') Submit
