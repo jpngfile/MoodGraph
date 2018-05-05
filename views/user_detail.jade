@@ -2,7 +2,6 @@ extends layout
 
 block content
 
-  script curDate = new Date()
   include partials/mood_graph
 
   hr
@@ -26,8 +25,12 @@ block content
 
   script.
 
+    var today = new Date();
+    today = getUTCDate(today);
+    today.setUTCHours(23);
+    console.log(today.toUTCString());
+
     function rectOnClick(d, i) {
-        //console.log(d);
         var rectDate = new Date(d.date);
         if (rectDate > today){
            return;
@@ -53,11 +56,9 @@ block content
             moodPrompt.innerHTML = "How did you feel on " + moment.utc(curDate).format('dddd, MMM Do YYYY') + "?"
         }
     }
-    console.log(!{JSON.stringify(options)})
     createGraph()
-
+    var curDate = new Date()
     var graphRects = getGraphRects();
-    graphRects.style('fill', (d) => colourMap.get(d.mood))
     graphRects.style('opacity', (d) => new Date(d.date).getTime() > today.getTime() ? 0.5 : 1)
     graphRects.on('click', rectOnClick)
     curDate = getUTCDate(curDate)

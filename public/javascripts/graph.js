@@ -9,7 +9,7 @@ var colourMap = new Map([
 ]);
 for(var i = 0; i < options.length; i++){
     var option = options[i];
-    console.log(option);
+    //console.log(option);
     colourMap.set(option.mood, option.color)
 }
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -25,7 +25,6 @@ function getDay(user, date) {
     var day = _.find(days, function(dayObj){ return equalDate(new Date(dayObj.date), date)});
     return day;
 }
-
 
 function getGraphRects(){
     return d3.select('.heatmap').selectAll('rect')
