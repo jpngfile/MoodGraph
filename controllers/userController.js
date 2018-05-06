@@ -24,7 +24,11 @@ exports.user_detail = function(req, res, next) {
         if (err) { return next(err); }
         console.log(results)
         if (results.verified) {
-            res.render('user_detail', { title: `Mood Journal (${results.user.username})`, user: results.user, options: utils.defaultMoodOptions })
+            res.render('user_detail', {
+                title: `Mood Journal (${results.user.username})`,
+                user: results.user,
+                options: utils.defaultMoodOptions
+            })
         } else {
             res.redirect('/login');
         }
@@ -119,7 +123,9 @@ exports.login_get = function (req, res) {
 }
 
 exports.user_login_post = [
-    body('username').isLength({ min: 1}).trim().withMessage('Username must be specified').isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
+    body('username')
+        .isLength({ min: 1}).trim().withMessage('Username must be specified')
+        .isAlphanumeric().withMessage('Username has non-alphanumeric characters.'),
     body('password').isLength({ min: 1}).withMessage('Password must be specified'),
 
     sanitizeBody('username').trim().escape(),
