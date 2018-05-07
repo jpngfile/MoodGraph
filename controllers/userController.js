@@ -78,7 +78,6 @@ exports.user_create_post = [
     }
 ];
 
-// Should verify user before posting
 // Good opportunity to use decorators. May justify using promises as well
 exports.user_update_post = function(req, res, next) {
     var curDate = new Date(req.body.date)
@@ -114,7 +113,6 @@ exports.user_update_post = function(req, res, next) {
            res.redirect(user.url)
            //res.render('partials/mood_graph', {user: user, layout: false});
         });
-        //res.render('user_detail', { title: 'User detail', user: results.user })
     });
 };
 
