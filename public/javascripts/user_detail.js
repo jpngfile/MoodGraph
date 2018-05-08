@@ -1,3 +1,5 @@
+
+// Initialize dates
 var today = new Date();
 today = getUTCDate(today);
 today.setUTCHours(23);
