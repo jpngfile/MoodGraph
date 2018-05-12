@@ -21,12 +21,12 @@ class MoodOption {
 }
 
 exports.defaultMoodOptions = [
-    new MoodOption('happy', '#FFE548', '/images/happyIcon.png'),
-    new MoodOption('sad', '#8EB1C7', '/images/sadIcon.png'),
-    new MoodOption('neutral', '#E5F3BB', '/images/neutralIcon.png'),
-    new MoodOption('frustrated', '#DF2935', '/images/frustratedIcon.png'),
-    new MoodOption('excited', '#AFA2FF', '/images/excitedIcon.png'),
-    new MoodOption('productive', '#000000', '/images/productiveIcon.png'),
+    new MoodOption('happy', '#FFE548', '/images/moodIcons/happyIcon.png'),
+    new MoodOption('sad', '#8EB1C7', '/images/moodIcons/sadIcon.png'),
+    new MoodOption('neutral', '#E5F3BB', '/images/moodIcons/neutralIcon.png'),
+    new MoodOption('frustrated', '#DF2935', '/images/moodIcons/frustratedIcon.png'),
+    new MoodOption('excited', '#AFA2FF', '/images/moodIcons/excitedIcon.png'),
+    new MoodOption('productive', '#000000', '/images/moodIcons/productiveIcon.png'),
 ];
 
 exports.verifySession = function(req, session, callback) {
