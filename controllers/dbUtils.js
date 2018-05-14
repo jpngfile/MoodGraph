@@ -1,6 +1,7 @@
 var User = require('../models/user');
 var Year = require('../models/year');
 var Day = require('../models/day');
+var Mood = require('../models/mood');
 
 var async = require('async');
 var bcrypt = require('bcrypt');
@@ -28,6 +29,27 @@ exports.defaultMoodOptions = [
     new MoodOption('excited', '#AFA2FF', '/images/moodIcons/excitedIcon.png'),
     new MoodOption('productive', '#000000', '/images/moodIcons/productiveIcon.png'),
 ];
+
+function create_default_moods(finalCallback){
+    var moods = [];
+    for (var i = 0; i < defaultMoodOptions.length; i++){
+        moodOption = defaultMoodOptions[i];
+        var mood = new Mood({
+            mood: moodOption.mood,
+            color: moodOption.color,
+            imagePath: moodOption.imagePath,
+        })
+        moods.push(mood);
+    }
+    async.each(moods, function(mood, callback) {
+        mood.save(function(err) {
+            if (err) { return callback(err) }
+            return callback()
+        })
+    }, finalCallback);
+}
+
+exports.create_default_moods = create_default_moods;
 
 exports.verifySession = function(req, session, callback) {
     if (session == null ||
