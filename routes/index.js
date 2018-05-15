@@ -1,10 +1,15 @@
 var express = require('express');
 var router = express.Router();
+var utils = require('../controllers/dbUtils');
 
 var user_controller = require('../controllers/userController')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Mood Journal' });
+});
+
+router.get('/test', function(req, res, next) {
+    res.render('test_colors', { colors: utils.defaultColors })
 });
 
 // GET request for creating a user

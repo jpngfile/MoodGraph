@@ -30,6 +30,19 @@ exports.defaultMoodOptions = [
     new MoodOption('productive', '#000000', '/images/moodIcons/productiveIcon.png'),
 ];
 
+exports.defaultColors = [
+    "#F59Fb8", // Pixie
+    "#E690A8", // Cotton Candy
+    "#EC8086", // Smoothie
+    "#D4687E", // Hollyhock
+    "#B85067", // Pomegranate
+    "#B24F60", // Ruby 
+    "#E75B57", // Poppy
+    "#B84543", // Cranberry
+    "#F49580", // Sorbet
+    "#EE825A", // Sunset
+];
+
 function create_default_moods(finalCallback){
     var moods = [];
     for (var i = 0; i < defaultMoodOptions.length; i++){
