@@ -41,6 +41,16 @@ exports.defaultColors = [
     "#B84543", // Cranberry
     "#F49580", // Sorbet
     "#EE825A", // Sunset
+    "#D98E4D", // Goldrush 
+    "#DEAC49", // Saffron
+    "#F5CD6D", // Canary 
+    "#FFCD2A", // Honey 
+    "#D3C28A", // Flaxen 
+    "#C2CB93", // Sweet Leaf 
+    "#9E9E4F", // Fern 
+    "#AAD272", // Pear 
+    "#708C4C", // Topiary 
+    "#636E4D", // New England Ivy 
 ];
 
 function create_default_moods(finalCallback){
