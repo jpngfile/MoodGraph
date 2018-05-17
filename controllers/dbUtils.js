@@ -50,7 +50,17 @@ exports.defaultColors = [
     "#9E9E4F", // Fern 
     "#AAD272", // Pear 
     "#708C4C", // Topiary 
-    "#636E4D", // New England Ivy 
+    "#636E4D", // New England Ivy
+    "#88B6AD", // Juniper
+    "#9DCDCD", // Glacier 
+    "#48B9B6", // Lagoon 
+    "#226774", // Peacock
+    "#84BCD5", // Crystal Blue 
+    "#30789D", // Pacifica
+    "#3B5281", // Sapphire
+    "#B865AB", // Thistle
+    "#8F7CB2", // Gypsy 
+    "#895775", // Eggplant
 ];
 
 function create_default_moods(finalCallback){
