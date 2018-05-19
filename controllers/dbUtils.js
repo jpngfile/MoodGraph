@@ -61,6 +61,16 @@ exports.defaultColors = [
     "#B865AB", // Thistle
     "#8F7CB2", // Gypsy 
     "#895775", // Eggplant
+    "#F4EDDA", // Colonial White
+    "#D8C7A9", // Bamboo
+    "#E6D1B8", // Champagne
+    "#D0D1B8", // Cashmere
+    "#A58869", // Desert Sand
+    "#B1816C", // Saddle
+    "#896859", // Chocolate
+    "#756857", // Cocoa
+    "#C0B9B4", // Whisper
+    "#9A918D", // Slate
 ];
 
 function create_default_moods(finalCallback){
