@@ -12,6 +12,10 @@ router.get('/test', function(req, res, next) {
     res.render('test_colors', { colors: utils.defaultColors })
 });
 
+router.get('/settings', function(req, res, next) {
+    res.render('edit_settings', { options: utils.defaultMoodOptions })
+});
+
 // GET request for creating a user
 router.get('/user/create', user_controller.user_create_get)
 
