@@ -155,6 +155,20 @@ exports.user_login_post = [
                 req.session.password = user.password;
                 req.session.url = user.url;
 
+                // Update year
+                var currentYear = new Date().getUTCFullYear();
+                var year = user.years.find(function(el) {
+                     return el.year === currentYear;
+                })
+                if (year == null) {
+                    utils.create_new_year(currentYear, function(err, returnedYear) {
+                        console.log(returnedYear);
+                        if (err) { return; }
+                        user.years.push(returnedYear);
+                        user.save();
+                    });
+                }
+
                 console.log(req.session)
                 res.redirect(user.url)
             })
